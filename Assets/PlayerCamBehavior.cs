@@ -9,7 +9,8 @@ public class PlayerCamBehavior : MonoBehaviour {
 
     [Space]
     [Header("Internal")]
-    [SerializeField] private Transform lookingDirection;
+    [SerializeField] private Transform characterTransform;
+    [SerializeField] private Transform lookAtDirectionRig;
 
     private float horizontalRotation;
     private float verticalRotation;
@@ -43,7 +44,8 @@ public class PlayerCamBehavior : MonoBehaviour {
         verticalRotation = Math.Clamp(verticalRotation, -90, 90);
 
         this.transform.rotation = Quaternion.Euler(verticalRotation, horizontalRotation, 0);
-        lookingDirection.rotation = Quaternion.Euler(0, horizontalRotation, 0);
+        characterTransform.rotation = Quaternion.Euler(0, horizontalRotation, 0);
+        lookAtDirectionRig.rotation = Quaternion.Euler(verticalRotation, horizontalRotation, 0);
 
 
 

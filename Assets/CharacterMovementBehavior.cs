@@ -9,7 +9,6 @@ public class CharacterMovementBehavior : MonoBehaviour {
 
     [Space]
     [Header("Internal")]
-    [SerializeField] private Transform lookingDirection;
     [SerializeField] private CharacterController characterController;
 
     [Space]
@@ -24,7 +23,6 @@ public class CharacterMovementBehavior : MonoBehaviour {
     private void Update() {
         UpdateInputs();
         Move();
-        UpdatePlayerRotation();
         UpdateAnimator();
     }
 
@@ -37,14 +35,9 @@ public class CharacterMovementBehavior : MonoBehaviour {
     }
 
     private void Move() {
-        moveDirection = (lookingDirection.forward * verticalInput) + (lookingDirection.right * horizontalInput);
+        moveDirection = (this.transform.forward * verticalInput) + (this.transform.right * horizontalInput);
         characterController.Move(moveDirection * moveSpeed * Time.deltaTime);
         isMoving = moveDirection.magnitude > 0;
-    }
-
-    private void UpdatePlayerRotation() {
-        if (isMoving)
-            this.transform.rotation = lookingDirection.transform.rotation;
     }
 
     private void UpdateAnimator() {
