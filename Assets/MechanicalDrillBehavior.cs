@@ -12,17 +12,15 @@ public class MechanicalDrillBehavior : MonoBehaviour {
     [Tooltip("Base time to drill one ore, in seconds.")]
     [SerializeField] private float drillTime = 11f;
     [SerializeField] private int maxOreCapacity = 10;
-    [SerializeField][Range(0.5f, 5f)] private float drillSpeed;
-    [SerializeField][Range(5f, 50f)] private float acceleration;
-
-    [Header("Read Only")]
-    [SerializeField] private float secondsToStartProduction = 0;
+    [SerializeField][Range(0.1f, 1f)] private float drillSpeed;
+    [SerializeField][Range(0.1f, 4f)] private float secondsToMaxSpeed;
 
     [Space]
     [Header("Internal")]
     [SerializeField] private MultiTileOreCheckerBehavior oreChecker;
     [SerializeField] private Transform drill;
 
+    private float acceleration;
     private bool starting = false;
     private bool producing = false;
     private float oreCount;
@@ -30,7 +28,7 @@ public class MechanicalDrillBehavior : MonoBehaviour {
     private float currentSpeed = 0;
 
     private void StartDrill() {
-        Debug.Log("StartDrill");
+        acceleration = drillSpeed / (secondsToMaxSpeed / 0.02f);
         starting = true;
         StopAllCoroutines();
         StartCoroutine(SpeedUpDrill());
@@ -45,17 +43,12 @@ public class MechanicalDrillBehavior : MonoBehaviour {
     }
 
     private void Update() {
-        UpdateReadOnlyInformation();
         SpinDrill();
         RestartDrill();
     }
 
-    private void UpdateReadOnlyInformation() {
-        secondsToStartProduction = drillSpeed / (acceleration / 1000) * 0.02f;
-    }
-
     private void SpinDrill() {
-        drill.Rotate(0f, 0f, -currentSpeed, Space.Self);
+        drill.Rotate(0f, -currentSpeed, 0f, Space.Self);
     }
 
     private void RestartDrill() {
@@ -86,14 +79,10 @@ public class MechanicalDrillBehavior : MonoBehaviour {
     private IEnumerator Production() {
         yield return new WaitUntil(() => IsAtMaxSpeed());
         oreChecker.Recalculate();
-        Debug.Log("Recalculated: " + oreChecker.GetEffectiveTileCount());
-
 
         while (!IsFull()) {
             float timeToDrillOne = drillTime / oreChecker.GetEffectiveTileCount();
-            Debug.Log("timeToDrillOne: " + timeToDrillOne);
             yield return new WaitForSeconds(timeToDrillOne);
-            Debug.Log("drilled!");
             oreCount++;
         }
 
