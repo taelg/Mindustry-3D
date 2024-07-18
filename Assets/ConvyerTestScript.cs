@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class ConvyerTestScript : MonoBehaviour {
 
-    [SerializeField] private float speed;
+    [SerializeField] private float speed = 100;
+    [SerializeField] private float startingOffset = 0.09f;
     [SerializeField] private Material material;
-    [SerializeField] private bool moveInX;
-    [SerializeField] private bool moveInY;
 
+    private void Start() {
+        material.mainTextureOffset = new Vector2(startingOffset, 0);
+    }
 
-    void Update() {
-        float x = moveInX ? 1 : 0;
-        float y = moveInY ? 1 : 0;
-        material.mainTextureOffset -= new Vector2(x, y) * speed * Time.deltaTime;
+    private void Update() {
+        material.mainTextureOffset -= new Vector2(1, 0) * (speed / 100f) * Time.deltaTime;
     }
 }
