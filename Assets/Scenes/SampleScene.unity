@@ -1874,6 +1874,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   horizontalLookSensitivity: 200
   verticalLookSensitivity: 200
+  horizontalLookSensitivity: 200
+  verticalLookSensitivity: 200
   characterTransform: {fileID: 5012916212901115427}
   lookAtDirectionRig: {fileID: 469702395}
 --- !u!4 &990389502 stripped
