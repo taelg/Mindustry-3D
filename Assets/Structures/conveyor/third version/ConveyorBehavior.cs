@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ConveyorBehavior : FlowStructureBehavior {
@@ -25,7 +21,6 @@ public class ConveyorBehavior : FlowStructureBehavior {
     private void OnEnable() {
         outputDir = this.transform.forward;
         outputs.Clear();
-        Debug.Log("outputDir: " + outputDir);
         outputs.Add(outputDir);
         Debug.DrawRay(this.transform.position, outputDir, Color.blue, 180);
         UpdateConveyorInputs();
