@@ -1,12 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraFollowBehavior : MonoBehaviour {
 
-    [SerializeField] private Transform transformToFollow;
+    [Header("Configurable")]
+    [SerializeField] private float followSpeed;
+    [Tooltip("How much faster should the camera be when player stop moving.")]
+    [SerializeField] private float playerStillSpeedMultiplier;
 
-    void Update() {
-        this.transform.position = transformToFollow.position;
+    [Header("Internal")]
+    [SerializeField] private PlayerMovementBehavior playerMovement;
+    private Vector3 velocity = Vector3.zero;
+
+    private void LateUpdate() {
+        Transform target = playerMovement.transform;
+        float speed = playerMovement.IsMoving() ? followSpeed : followSpeed * playerStillSpeedMultiplier;
+        this.transform.position = Vector3.Lerp(this.transform.position, target.position, speed * Time.deltaTime);
     }
+
+
 }
