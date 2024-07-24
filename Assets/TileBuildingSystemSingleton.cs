@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class TileManager : MonoBehaviour, ISingleton {
+public class TileManager : MonoBehaviour {
 
     public static TileManager instance;
 
@@ -11,7 +9,7 @@ public class TileManager : MonoBehaviour, ISingleton {
 
     }
 
-    public void StartSingleton() {
+    protected void StartSingleton() {
         if (instance != null) {
             instance = this;
         } else {

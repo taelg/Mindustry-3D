@@ -1,25 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour {
 
     public static InputManager Instance;
 
-    void Start() {
+    private void Start() {
         StartSingleton();
     }
 
-    private void StartSingleton() {
+    protected void StartSingleton() {
         if (Instance != null) {
             Instance = this;
+            DontDestroyOnLoad(this);
         } else {
             Destroy(this.gameObject);
             Debug.LogError("You are trying to initialize multiple Singletons of type: " + this.gameObject.name);
         }
     }
 
-    void Update() {
+    private void Update() {
         HandleInputs();
 
     }
@@ -27,6 +26,5 @@ public class InputManager : MonoBehaviour {
     private void HandleInputs() {
         // TODO: Use this class as an adapter to receive input from different controller types.
     }
-
 
 }
