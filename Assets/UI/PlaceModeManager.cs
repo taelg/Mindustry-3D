@@ -1,7 +1,8 @@
 using System.Collections;
 using UnityEngine;
 
-public class PlaceModeManager : MonoBehaviour {
+public class PlaceModeManager : MonoBehaviour
+{
     [SerializeField] private Camera activeCamera;
     public static PlaceModeManager Instance;
 
@@ -9,50 +10,62 @@ public class PlaceModeManager : MonoBehaviour {
     private GameObject selectedItem;
 
 
-    private void Start() {
+    private void Start()
+    {
         isActive = false;
         StartSingleton();
     }
 
-    private void StartSingleton() {
-        if (Instance != null) {
+    private void StartSingleton()
+    {
+        if (Instance != null)
+        {
             Instance = this;
             DontDestroyOnLoad(this);
-        } else {
+        }
+        else
+        {
             Destroy(this.gameObject);
             Debug.LogError("You are trying to initialize multiple Singletons of type: " + this.gameObject.name);
         }
     }
 
-    private void Update() {
+    private void Update()
+    {
         UpdateItemPosition();
         OnClickAddItem();
     }
 
-    public void StartMode(GameObject placeableSelected) {
+    public void StartMode(GameObject placeableSelected)
+    {
         this.selectedItem = placeableSelected;
         isActive = true;
         placeableSelected.SetActive(true);
     }
 
-    public void EndMode() {
+    public void EndMode()
+    {
         isActive = false;
         selectedItem.SetActive(false);
         selectedItem.transform.position = Vector3.zero;
     }
 
 
-    private void UpdateItemPosition() {
-        if (isActive) {
+    private void UpdateItemPosition()
+    {
+        if (isActive)
+        {
             selectedItem.transform.position = RaycastUtils.GetMouseWorldPosition(activeCamera);
         }
     }
 
-    private void OnClickAddItem() {
+    private void OnClickAddItem()
+    {
         bool clickToAdd = Input.GetMouseButtonDown(0);
-        if (isActive && clickToAdd) {
+        if (isActive && clickToAdd)
+        {
             GameObject newInstance = Instantiate(selectedItem);
-            newInstance.transform.position =
+            newInstance.transform.position = selectedItem.transform.position;
         }
     }
 
