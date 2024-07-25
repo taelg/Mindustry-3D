@@ -1,54 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class CameraZoomBehavior : MonoBehaviour
-{
+public class CameraZoomBehavior : MonoBehaviour {
 
-    [SerializeField] private int minCameraDistance = 3;
+    [SerializeField] private int minCameraDistance = 5;
+    [SerializeField] private int initialZoomDistance = 11;
     [SerializeField] private int maxCameraDistance = 30;
-    [SerializeField] private int wheelStep = 4;
+    [SerializeField] private int scrollSpeed = 5;
     [SerializeField] private float zoomSpeed = 5f;
+    [SerializeField] private new Camera camera;
 
-    private Camera thisCamera;
     private float targetZoom;
+    private float scroll;
+    private bool isScrolling = false;
 
-    private void Start()
-    {
-        thisCamera = this.GetComponent<Camera>();
-        targetZoom = GetStartingDistance();
+    private void Start() {
+        targetZoom = initialZoomDistance;
     }
 
-    private float GetStartingDistance()
-    {
-        return maxCameraDistance / minCameraDistance + minCameraDistance;
+    private void Update() {
+        UpdateScrollInput();
+        UpdateZoomTarget();
+        SmoothlyZoom();
     }
 
-    private void Update()
-    {
-        Zoom();
+    private void UpdateScrollInput() {
+        scroll = Input.mouseScrollDelta.y;
+        isScrolling = scroll != 0;
     }
 
-    private void Zoom()
-    {
-        HandleZoomInput();
-        thisCamera.orthographicSize = Mathf.Lerp(thisCamera.orthographicSize, targetZoom, Time.deltaTime * zoomSpeed);
-    }
-
-    private void HandleZoomInput()
-    {
-        float scroll = Input.mouseScrollDelta.y;
-        bool isZooming = scroll != 0;
-        if (isZooming)
-        {
-            bool isZoomingOut = scroll < 0;
-            float zoomValue = isZoomingOut ? wheelStep : -wheelStep;
-            targetZoom = Clamped(thisCamera.orthographicSize + zoomValue);
+    private void UpdateZoomTarget() {
+        if (isScrolling) {
+            float zoomValue = -scroll * scrollSpeed;
+            targetZoom = Clamped(camera.orthographicSize + zoomValue);
         }
     }
 
-    private float Clamped(float distance)
-    {
+    private void SmoothlyZoom() {
+        camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, targetZoom, Time.deltaTime * zoomSpeed);
+    }
+
+    private float Clamped(float distance) {
         return Mathf.Clamp(distance, minCameraDistance, maxCameraDistance);
     }
 

@@ -8,14 +8,29 @@ public class CameraFollowBehavior : MonoBehaviour {
     [SerializeField] private float playerStillSpeedMultiplier;
 
     [Header("Internal")]
-    [SerializeField] private PlayerMovementBehavior playerMovement;
-    private Vector3 velocity = Vector3.zero;
+    [SerializeField] private PlayerMovementBehavior player;
+
+    private Vector3 targetPosition;
+    private float currentSpeed;
 
     private void LateUpdate() {
-        Transform target = playerMovement.transform;
-        float speed = playerMovement.IsMoving() ? followSpeed : followSpeed * playerStillSpeedMultiplier;
-        this.transform.position = Vector3.Lerp(this.transform.position, target.position, speed * Time.deltaTime);
+        UpdateTargetPosition();
+        UpdateCurrentSpeed();
+        MoveCamera();
     }
 
+    private void UpdateTargetPosition() {
+        targetPosition = player.transform.position;
+    }
+
+    private void UpdateCurrentSpeed() {
+        currentSpeed = player.IsMoving() ? followSpeed : followSpeed * playerStillSpeedMultiplier;
+    }
+
+    private void MoveCamera() {
+        Vector3 newPosition = Vector3.Lerp(this.transform.position, targetPosition, currentSpeed * Time.deltaTime);
+        float notChangedHeight = this.transform.position.y;
+        this.transform.position = new Vector3(newPosition.x, notChangedHeight, newPosition.z);
+    }
 
 }

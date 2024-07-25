@@ -1,7 +1,6 @@
-using System;
 using UnityEngine;
 
-public class PlayerCamBehavior : MonoBehaviour {
+public class FirstPersonCamBehavior : MonoBehaviour {
 
     [Header("Configurable")]
     [SerializeField] private float horizontalLookSensitivity;
@@ -9,8 +8,8 @@ public class PlayerCamBehavior : MonoBehaviour {
 
     [Space]
     [Header("Internal")]
-    [SerializeField] private Transform characterTransform;
-    [SerializeField] private Transform lookAtDirectionRig;
+    [SerializeField] private Transform player;
+    [SerializeField] private Transform playerHeadRig;
 
     private float horizontalRotation;
     private float verticalRotation;
@@ -28,27 +27,27 @@ public class PlayerCamBehavior : MonoBehaviour {
         Cursor.visible = !hide;
     }
 
-    // Update is called once per frame
-    void Update() {
-        Look();
-
+    private void Update() {
+        UpdateInputs();
+        RotateCamera();
+        RotatePlayer();
     }
 
-    private void Look() {
+    private void UpdateInputs() {
         float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * horizontalLookSensitivity;
         float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * verticalLookSensitivity;
-
         horizontalRotation += mouseX;
         verticalRotation -= mouseY;
+        verticalRotation = Mathf.Clamp(verticalRotation, -90, 90);
+    }
 
-        verticalRotation = Math.Clamp(verticalRotation, -90, 90);
-
+    private void RotateCamera() {
         this.transform.rotation = Quaternion.Euler(verticalRotation, horizontalRotation, 0);
-        characterTransform.rotation = Quaternion.Euler(0, horizontalRotation, 0);
-        lookAtDirectionRig.rotation = Quaternion.Euler(verticalRotation, horizontalRotation, 0);
+    }
 
-
-
+    private void RotatePlayer() {
+        player.rotation = Quaternion.Euler(0, horizontalRotation, 0);
+        playerHeadRig.rotation = Quaternion.Euler(verticalRotation, horizontalRotation, 0);
     }
 
 
