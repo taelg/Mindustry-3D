@@ -77,8 +77,9 @@ public class MechanicalDrillBehavior : MonoBehaviour {
     private IEnumerator Production() {
         yield return new WaitUntil(() => IsAtMaxSpeed());
         oreChecker.Recalculate();
+        bool drillTierIsEnough = oreChecker.GetOreTier() <= tier;
 
-        while (!IsFull()) {
+        while (!IsFull() && drillTierIsEnough) {
             float timeToDrillOne = drillTime / oreChecker.GetEffectiveTileCount();
             yield return new WaitForSeconds(timeToDrillOne);
             oreCount++;
