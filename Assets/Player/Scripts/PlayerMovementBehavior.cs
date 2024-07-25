@@ -9,9 +9,10 @@ public class PlayerMovementBehavior : MonoBehaviour {
 
     [Space]
     [Header("Internal")]
-    [SerializeField] private Rigidbody rigidyBody;
+    [SerializeField] private Rigidbody rigidBody;
+
+    private Vector3 lastValidMoveDirection = Vector3.forward;
     private Vector3 moveDirection;
-    private Vector3 lastInputedMoveDirection = Vector3.forward;
 
 
     private void FixedUpdate() {
@@ -22,7 +23,7 @@ public class PlayerMovementBehavior : MonoBehaviour {
         UpdateMoveDirection();
         ApplyMoveForces();
         ClampMoveSpeed();
-        FaceMoveDirection();
+        FaceMovingDirection();
 
     }
 
@@ -30,28 +31,25 @@ public class PlayerMovementBehavior : MonoBehaviour {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
         moveDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
-        lastInputedMoveDirection = moveDirection.magnitude > 0.01f ? moveDirection : lastInputedMoveDirection;
+        lastValidMoveDirection = moveDirection.magnitude > 0.01f ? moveDirection : lastValidMoveDirection;
     }
 
     private void ApplyMoveForces() {
-        rigidyBody.AddForce(moveDirection * acceleration * Time.deltaTime);
+        rigidBody.AddForce(moveDirection * acceleration * Time.deltaTime);
     }
 
     private void ClampMoveSpeed() {
-        bool tooFast = rigidyBody.velocity.magnitude > moveSpeed;
-        Vector3 maxSpeed = rigidyBody.velocity.normalized * moveSpeed;
-        rigidyBody.velocity = tooFast ? maxSpeed : rigidyBody.velocity;
+        Vector3 clampedVelocity = Vector3.ClampMagnitude(rigidBody.velocity, moveSpeed);
+        rigidBody.velocity = clampedVelocity;
     }
 
-    private void FaceMoveDirection() {
-        Quaternion target = Quaternion.LookRotation(lastInputedMoveDirection);
+    private void FaceMovingDirection() {
+        Quaternion target = Quaternion.LookRotation(lastValidMoveDirection);
         transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * rotationSpeed);
     }
 
     public bool IsMoving() {
         return moveDirection.magnitude > 0;
     }
-
-
 
 }

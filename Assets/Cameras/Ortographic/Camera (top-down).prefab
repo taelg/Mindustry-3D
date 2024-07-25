@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6048106684647272108}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -70,7 +70,7 @@ Camera:
   far clip plane: 50
   field of view: 60
   orthographic: 1
-  orthographic size: 13
+  orthographic size: 11
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -106,10 +106,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70d0db3ac77fa7b4eb11d78552d36429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minCameraDistance: 5
+  minCameraDistance: 6
   initialZoomDistance: 11
   maxCameraDistance: 30
-  scrollSpeed: 1
+  scrollSpeed: 4
   zoomSpeed: 5
   camera: {fileID: 1453046177792436331}
 --- !u!114 &4539307766933819255
