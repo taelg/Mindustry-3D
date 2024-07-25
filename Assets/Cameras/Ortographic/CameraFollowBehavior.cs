@@ -7,6 +7,7 @@ public class CameraFollowBehavior : MonoBehaviour {
     [Tooltip("How much faster should the camera be when player stop moving.")]
     [SerializeField] private float playerStillSpeedMultiplier;
 
+    [Space]
     [Header("Internal")]
     [SerializeField] private PlayerMovementBehavior player;
 
