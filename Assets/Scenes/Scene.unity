@@ -4194,26 +4194,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1453046177792436331, guid: 352b18beaee289c40be16f871fe306c3, type: 3}
-      propertyPath: orthographic size
-      value: 11
-      objectReference: {fileID: 0}
     - target: {fileID: 4539307766933819255, guid: 352b18beaee289c40be16f871fe306c3, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 6695573333970369217}
-    - target: {fileID: 4879294486592326038, guid: 352b18beaee289c40be16f871fe306c3, type: 3}
-      propertyPath: scrollSpeed
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4879294486592326038, guid: 352b18beaee289c40be16f871fe306c3, type: 3}
-      propertyPath: minCameraDistance
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 4879294486592326038, guid: 352b18beaee289c40be16f871fe306c3, type: 3}
-      propertyPath: initialZoomDistance
-      value: 11
-      objectReference: {fileID: 0}
     - target: {fileID: 6048106684647272108, guid: 352b18beaee289c40be16f871fe306c3, type: 3}
       propertyPath: m_Name
       value: Camera (top-down)
