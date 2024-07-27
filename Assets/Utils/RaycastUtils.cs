@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class RaycastUtils {
 
@@ -7,6 +8,10 @@ public class RaycastUtils {
         return activeCamera.orthographic
             ? GetMouseWorldPositionOrtographic(activeCamera)
             : GetMouseWorldPositionPerspective(activeCamera);
+    }
+
+    public static bool IsMouseOverUI() {
+        return EventSystem.current.IsPointerOverGameObject();
     }
 
     private static Vector3 GetMouseWorldPositionPerspective(Camera activeCamera) {

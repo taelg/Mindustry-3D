@@ -12,19 +12,35 @@ public class TabMenuBehavior : MonoBehaviour {
         InitializeButtonActions();
     }
 
-    private void OnClick(ButtonPanelRelation option) {
+    private void OnClickSelectPanel(ButtonPanelRelation option) {
         CloseAllPanels();
         TogglePanel(option.panel);
         UnselectAllButtons();
         ToggleButton(option.button);
     }
 
+    private void Update() {
+        if (Input.GetMouseButtonDown(1)) {
+            ResetMenu();
+        }
+    }
+
+    private void ResetMenu() {
+        activePanel = null;
+        CloseAllPanels();
+        UnselectAllButtons();
+        ResetAllPanels();
+    }
+
     private void InitializeButtonActions() {
-        menuOptions.ToList().ForEach(option => option.button.AddEventOnClick(() => OnClick(option)));
+        menuOptions.ToList().ForEach(option => option.button.AddEventOnClick(() => OnClickSelectPanel(option)));
     }
 
     private void CloseAllPanels() {
         menuOptions.ToList().ForEach(option => option.panel.SetActive(false));
+    }
+    private void ResetAllPanels() {
+        menuOptions.ToList().ForEach(option => option.panel.GetComponent<SelectMenuBehavior>().ResetMenu());
     }
 
     private void TogglePanel(GameObject panel) {

@@ -3,29 +3,41 @@ using UnityEngine;
 
 public class SelectMenuBehavior : MonoBehaviour {
 
-    [SerializeField] private MenuButtonBehavior[] menuButtons;
+    [SerializeField] private PlaceableButtonBehavior[] menuButtons;
 
-    private MenuButtonBehavior activeButton = null;
+    private PlaceableButtonBehavior activeButton = null;
 
     private void Start() {
         InitializeButtonActions();
     }
 
-    private void OnSelectButton(MenuButtonBehavior button) {
+    private void OnDisable() {
+        ResetMenu();
+    }
+
+    public void ResetMenu() {
+        activeButton = null;
+        UnselectAllButtons();
+        UpdatePlaceMode();
+        this.gameObject.SetActive(false);
+    }
+
+
+    private void OnClickSelectPlaceable(PlaceableButtonBehavior button) {
         UnselectAllButtons();
         UpdateButton(button);
         UpdatePlaceMode();
     }
 
     private void InitializeButtonActions() {
-        menuButtons.ToList().ForEach(button => button.AddEventOnClick(() => OnSelectButton(button)));
+        menuButtons.ToList().ForEach(button => button.AddEventOnClick(() => OnClickSelectPlaceable(button)));
     }
 
     private void UnselectAllButtons() {
         menuButtons.ToList().ForEach(button => button.Unselect());
     }
 
-    private void UpdateButton(MenuButtonBehavior button) {
+    private void UpdateButton(PlaceableButtonBehavior button) {
         bool select = activeButton != button;
         button.SetSelect(select);
         activeButton = select ? button : null;

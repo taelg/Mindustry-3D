@@ -6,7 +6,6 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 [Serializable]
 public class MenuButtonBehavior : MonoBehaviour {
-    [SerializeField] private GameObject placeableItem;
     [SerializeField] private GameObject selectedBorder;
     private Button button;
 
@@ -28,10 +27,6 @@ public class MenuButtonBehavior : MonoBehaviour {
 
     public void AddEventOnClick(UnityAction action) {
         button.onClick.AddListener(action);
-    }
-
-    public GameObject GetPlaceableItem() {
-        return placeableItem;
     }
 
 }
