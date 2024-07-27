@@ -4,7 +4,6 @@ using UnityEngine;
 public class PlaceModeManager : SingletonBehavior<PlaceModeManager> {
     [SerializeField] private Camera activeCamera;
     [SerializeField] private Transform placeableParent;
-    [SerializeField] private Grid referenceGrid;
     [SerializeField] private Dictionary<Vector2Int, bool> occupiedGrid = new Dictionary<Vector2Int, bool>();
 
     private bool isActive = false;
@@ -67,20 +66,6 @@ public class PlaceModeManager : SingletonBehavior<PlaceModeManager> {
         }
     }
 
-    private void OnClickAddItem() {
-        if (isActive) {
-            bool clickToAdd = Input.GetMouseButtonDown(0);
-            bool notInMenu = !RaycastUtils.IsMouseOverUI();
-            bool isFreeSpace = IsGridEmptyAtCurrentPos();
-
-            if (clickToAdd && notInMenu && isFreeSpace) {
-                GameObject gameObject = Instantiate(placeableSelected, placeableSelected.transform.position, placeableSelected.transform.rotation, placeableParent);
-                BoxCollider boxCollider = gameObject.transform.GetComponent<BoxCollider>();
-                TakeSpace(gameObject.transform, boxCollider);
-            }
-        }
-    }
-
     public void TakeSpace(Transform transform, BoxCollider boxCollider) {
         Vector3 size = boxCollider.size;
         Vector3 bottomLeft = transform.position - size * 0.5f;
@@ -108,6 +93,20 @@ public class PlaceModeManager : SingletonBehavior<PlaceModeManager> {
             }
         }
         return true;
+    }
+
+    private void OnClickAddItem() {
+        if (isActive) {
+            bool clickToAdd = Input.GetMouseButtonDown(0);
+            bool notInMenu = !RaycastUtils.IsMouseOverUI();
+            bool isFreeSpace = IsGridEmptyAtCurrentPos();
+
+            if (clickToAdd && notInMenu && isFreeSpace) {
+                GameObject gameObject = Instantiate(placeableSelected, placeableSelected.transform.position, placeableSelected.transform.rotation, placeableParent);
+                BoxCollider boxCollider = gameObject.transform.GetComponent<BoxCollider>();
+                TakeSpace(gameObject.transform, boxCollider);
+            }
+        }
     }
 
 
