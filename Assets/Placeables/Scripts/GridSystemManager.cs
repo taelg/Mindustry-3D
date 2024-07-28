@@ -28,7 +28,7 @@ public class GridSystemManager : SingletonBehavior<GridSystemManager> {
         return snappedPosition;
     }
 
-    public bool IsGridEmpty(PlaceableGhostBehavior placeable) {
+    public bool IsGridEmpty(PlaceableBehavior placeable) {
         Vector3 position = placeable.transform.position;
         Vector3 size = placeable.GetSize();
         Vector3 bottomLeft = position - size * 0.5f;
@@ -46,7 +46,7 @@ public class GridSystemManager : SingletonBehavior<GridSystemManager> {
         return true;
     }
 
-    public void TakeSpace(PlaceableGhostBehavior placeable) {
+    public void TakeSpace(PlaceableBehavior placeable) {
         Vector3 size = placeable.GetSize();
         Vector3 bottomLeft = placeable.transform.position - size * 0.5f;
         for (int x = Mathf.FloorToInt(bottomLeft.x); x < Mathf.CeilToInt(bottomLeft.x + size.x); x++) {
@@ -60,11 +60,11 @@ public class GridSystemManager : SingletonBehavior<GridSystemManager> {
 
 
 public class Tile {
-    public PlaceableGhostBehavior placeable = null;
+    public PlaceableBehavior placeable = null;
 
     public OreType ore = OreType.NONE;
 
-    public Tile(PlaceableGhostBehavior placeable) {
+    public Tile(PlaceableBehavior placeable) {
         this.placeable = placeable;
     }
 
