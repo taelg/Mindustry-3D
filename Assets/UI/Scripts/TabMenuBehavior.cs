@@ -39,6 +39,11 @@ public class TabMenuBehavior : MonoBehaviour {
     private void CloseAllPanels() {
         menuOptions.ToList().ForEach(option => option.panel.SetActive(false));
     }
+
+    private void UnselectAllButtons() {
+        menuOptions.ToList().ForEach(option => option.button.Unselect());
+    }
+
     private void ResetAllPanels() {
         menuOptions.ToList().ForEach(option => option.panel.GetComponent<SelectMenuBehavior>().ResetMenu());
     }
@@ -47,10 +52,6 @@ public class TabMenuBehavior : MonoBehaviour {
         bool isActiving = panel != activePanel;
         panel.SetActive(isActiving);
         activePanel = isActiving ? panel : null;
-    }
-
-    private void UnselectAllButtons() {
-        menuOptions.ToList().ForEach(option => option.button.Unselect());
     }
 
     private void ToggleButton(MenuButtonBehavior button) {

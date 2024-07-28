@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PlaceableButtonBehavior : MenuButtonBehavior {
 
-    [SerializeField] private GameObject placeableItem;
+    [SerializeField] private PlaceableType placeableType;
 
-    public GameObject GetPlaceableItem() {
-        return placeableItem;
+    public PlaceableType GetPlaceableType() {
+        return placeableType;
     }
 
 }

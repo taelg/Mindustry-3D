@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Drill
   - Conveyor
+  - UI
+  - Terrain
+  - Placeable Ghost
   layers:
   - Default
   - TransparentFX

@@ -1,50 +1,102 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlaceModeManager : SingletonBehavior<PlaceModeManager> {
-    [SerializeField] private Camera activeCamera;
+
+    //Place Mode
     [SerializeField] private Transform placeableParent;
-    [SerializeField] private Dictionary<Vector2Int, bool> occupiedGrid = new Dictionary<Vector2Int, bool>();
 
     private bool isActive = false;
-    private GameObject placeableSelected;
-    private BoxCollider placeableBoxCollider;
+    private PlaceableType placeableType;
+    private PlaceableGhostBehavior mainPlaceableGhost;
+    private List<PlaceableGhostBehavior> ghostPreviews = new List<PlaceableGhostBehavior>();
     private Vector3 dragInitialPos;
-    private Vector3 dragFinalPos;
     private bool isDragging = false;
 
     private new void Awake() {
         base.Awake();
     }
 
-    public void StartMode(GameObject placeableSelected) {
-        this.placeableSelected = placeableSelected;
-        this.placeableBoxCollider = placeableSelected.GetComponent<BoxCollider>();
+    public void StartMode(PlaceableType placeableType) {
+        this.placeableType = placeableType;
+        this.mainPlaceableGhost = PoolManager.Instance.GetPoolGhostByType(placeableType).GetNext().GetComponent<PlaceableGhostBehavior>();
         isActive = true;
-        placeableSelected.SetActive(true);
-        activeCamera.GetComponent<CameraZoomBehavior>().enabled = false;
+        mainPlaceableGhost.gameObject.SetActive(true);
+        Camera.main.GetComponent<CameraZoomBehavior>().enabled = false;
     }
 
     public void EndMode() {
         if (isActive) {
-            placeableSelected.transform.position = Vector3.zero;
-            placeableSelected.SetActive(false);
+            CancelDrag();
+            mainPlaceableGhost.gameObject.SetActive(false);
             isActive = false;
-            activeCamera.GetComponent<CameraZoomBehavior>().enabled = true;
+            Camera.main.GetComponent<CameraZoomBehavior>().enabled = true;
         }
     }
 
     private void Update() {
         HandleInputs();
-        MovePlaceableToMouseWorldPosition();
+        MovePlaceableToMouse();
+        UpdateMainPaceablePreview();
+        HandleAdditionalPlaceables();
     }
 
-    private void MovePlaceableToMouseWorldPosition() {
-        if (isActive) {
-            Vector3 position = RaycastUtils.GetMouseWorldPosition(activeCamera);
-            position = GetPositionSnappedToGrid(position);
-            placeableSelected.transform.position = position;
+    private void MovePlaceableToMouse() {
+        if (isActive && !isDragging) {
+            Vector3 position = RaycastUtils.GetMouseWorldPosition(Camera.main);
+            position = GridSystemManager.Instance.GetPositionSnappedToGrid(position, mainPlaceableGhost.GetSize());
+            mainPlaceableGhost.transform.position = position;
         }
+    }
+
+    private void UpdateMainPaceablePreview() {
+        if (isActive && !isDragging) {
+            mainPlaceableGhost.GetComponent<PlaceableGhostBehavior>().Preview();
+        }
+    }
+
+    private void HandleAdditionalPlaceables() {
+        if (isActive && isDragging) {
+            DisableAllGhosts();
+            int additionalCount = GetAdditionalPlaceablesNeeded();
+            AddGhostPreview(additionalCount);
+        }
+    }
+
+    private void DisableAllGhosts() {
+        foreach (PlaceableGhostBehavior ghost in ghostPreviews) {
+            ghost.gameObject.SetActive(false);
+        }
+        ghostPreviews.Clear();
+    }
+
+    private void AddGhostPreview(int count) {
+        Vector3 distancePerPrefab = GetDragDirection() * mainPlaceableGhost.GetSize().x;
+        Vector3 currentDistance = mainPlaceableGhost.transform.position;
+        for (int i = 0; i < count; i++) {
+            currentDistance += distancePerPrefab;
+            GameObject ghostPrefab = PoolManager.Instance.GetPoolGhostByType(placeableType).GetNext();
+            PlaceableGhostBehavior ghost = ghostPrefab.GetComponent<PlaceableGhostBehavior>();
+            ghostPrefab.transform.position = currentDistance;
+            ghost.Preview();
+            ghostPreviews.Add(ghost);
+        }
+    }
+
+    public int GetAdditionalPlaceablesNeeded() {
+        Vector3 dragPosition = RaycastUtils.GetMouseWorldPosition(Camera.main);
+        float dragLenghtX = Mathf.Abs(dragInitialPos.x - dragPosition.x);
+        float dragLenghtZ = Mathf.Abs(dragInitialPos.z - dragPosition.z);
+
+        int additionalCount = 0;
+        if (dragLenghtX > dragLenghtZ) {
+            additionalCount = (int)Mathf.Round(dragLenghtX / mainPlaceableGhost.GetSize().x);
+        } else {
+            additionalCount = (int)Mathf.Round(dragLenghtZ / mainPlaceableGhost.GetSize().z);
+        }
+
+        return additionalCount;
     }
 
     private void HandleInputs() {
@@ -54,51 +106,56 @@ public class PlaceModeManager : SingletonBehavior<PlaceModeManager> {
                 OnScrollRotatePlaceable(scroll);
 
             if (Input.GetMouseButtonDown(0) && !RaycastUtils.IsMouseOverUI())
-                OnStartDrag();
+                StartDrag();
 
             if (Input.GetMouseButtonUp(0))
-                OnEndDrag();
+                EndDrag();
         }
     }
 
     private void OnScrollRotatePlaceable(float scroll) {
         float scrollDir = scroll > 0 ? -1 : 1;
-        placeableSelected.transform.Rotate(Vector3.up, scrollDir * 90);
+        mainPlaceableGhost.transform.Rotate(Vector3.up, scrollDir * 90);
     }
-    private void OnStartDrag() {
+    private void StartDrag() {
         isDragging = true;
-        dragInitialPos = placeableSelected.transform.position;
+        dragInitialPos = mainPlaceableGhost.transform.position;
     }
 
-    private void OnEndDrag() {
+    private void EndDrag() {
         if (isDragging) {
             isDragging = false;
-            dragFinalPos = placeableSelected.transform.position;
-            OnEndDragAddPlaceableToWorld();
-            Debug.DrawLine(dragInitialPos, dragFinalPos, Color.red, 5);
+            PlaceGhostPreviews();
+            DisableAllGhosts();
         }
     }
 
-    private void OnEndDragAddPlaceableToWorld() {
-        Vector3 drag = GetDrag();
-        Vector3 placeableSize = placeableBoxCollider.size;
-        Vector3 currentPos = dragInitialPos;
-        int totalPlaceables = drag.x != 0
-            ? Mathf.CeilToInt(Mathf.Abs(dragFinalPos.x - dragInitialPos.x) / placeableSize.x)
-            : Mathf.CeilToInt(Mathf.Abs(dragFinalPos.z - dragInitialPos.z) / placeableSize.z);
-
-        for (int i = 0; i <= totalPlaceables; i++) {
-            if (IsGridEmptyAtCurrentPos(currentPos, placeableSize)) {
-                GameObject gameObject = Instantiate(placeableSelected, currentPos, placeableSelected.transform.rotation, placeableParent);
-                TakeSpace(gameObject.transform, placeableBoxCollider);
-            }
-            currentPos += drag * placeableSize.x;
+    private void CancelDrag() {
+        if (isDragging) {
+            isDragging = false;
+            DisableAllGhosts();
         }
-
     }
 
-    private Vector3 GetDrag() {
-        Vector3 direction = dragFinalPos - dragInitialPos;
+    private Vector3 GetDragCurrentPosition() {
+        return RaycastUtils.GetMouseWorldPosition(Camera.main);
+        //Vector3 position = RaycastUtils.GetMouseWorldPosition(activeCamera);
+        //position = GetPositionSnappedToGrid(position);
+        //return position;
+    }
+
+    private void PlaceGhostPreviews() {
+        foreach (PlaceableGhostBehavior ghost in ghostPreviews) {
+            ghost.TryPlace();
+        }
+        ghostPreviews.Clear();
+        mainPlaceableGhost.GetComponent<PlaceableGhostBehavior>().TryPlace();
+        this.mainPlaceableGhost = PoolManager.Instance.GetPoolGhostByType(placeableType).GetNext().GetComponent<PlaceableGhostBehavior>();
+    }
+
+    private Vector3 GetDragDirection() {
+        Vector3 currentPos = GetDragCurrentPosition();
+        Vector3 direction = currentPos - dragInitialPos;
         float distanceX = Mathf.Abs(direction.x);
         float distanceZ = Mathf.Abs(direction.z);
 
@@ -108,42 +165,6 @@ public class PlaceModeManager : SingletonBehavior<PlaceModeManager> {
             direction = new Vector3(0, 0, Mathf.Sign(direction.z));
         }
         return direction;
-    }
-
-    private Vector3 GetPositionSnappedToGrid(Vector3 position) {
-        Vector3 size = placeableBoxCollider.size;
-        float gridCellSize = 1;
-        Vector3 halfSize = size * 0.5f;
-        float x = Mathf.Round((position.x - halfSize.x) / gridCellSize) * gridCellSize + halfSize.x;
-        float z = Mathf.Round((position.z - halfSize.z) / gridCellSize) * gridCellSize + halfSize.z;
-        Vector3 snappedPosition = new Vector3(x, 0, z);
-        return snappedPosition;
-    }
-
-    public void TakeSpace(Transform transform, BoxCollider boxCollider) {
-        Vector3 size = boxCollider.size;
-        Vector3 bottomLeft = transform.position - size * 0.5f;
-
-        for (int x = Mathf.FloorToInt(bottomLeft.x); x < Mathf.CeilToInt(bottomLeft.x + size.x); x++) {
-            for (int z = Mathf.FloorToInt(bottomLeft.z); z < Mathf.CeilToInt(bottomLeft.z + size.z); z++) {
-                occupiedGrid.Add(new Vector2Int(x, z), true);
-            }
-        }
-    }
-
-    private bool IsGridEmptyAtCurrentPos(Vector3 position, Vector3 size) {
-        Vector3 bottomLeft = position - size * 0.5f;
-
-        for (int x = Mathf.FloorToInt(bottomLeft.x); x < Mathf.CeilToInt(bottomLeft.x + size.x); x++) {
-            for (int z = Mathf.FloorToInt(bottomLeft.z); z < Mathf.CeilToInt(bottomLeft.z + size.z); z++) {
-                Vector2Int cellPosition = new Vector2Int(x, z);
-                bool existKey = occupiedGrid.ContainsKey(cellPosition);
-                if (existKey && occupiedGrid[cellPosition]) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
 }

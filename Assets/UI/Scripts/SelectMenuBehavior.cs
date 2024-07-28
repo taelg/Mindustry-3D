@@ -45,7 +45,7 @@ public class SelectMenuBehavior : MonoBehaviour {
 
     private void UpdatePlaceMode() {
         if (activeButton) {
-            PlaceModeManager.Instance.StartMode(activeButton.GetPlaceableItem());
+            PlaceModeManager.Instance.StartMode(activeButton.GetPlaceableType());
         } else {
             PlaceModeManager.Instance.EndMode();
         }
