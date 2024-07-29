@@ -51,8 +51,17 @@ public class GridSystemManager : SingletonBehavior<GridSystemManager> {
         Vector3 bottomLeft = placeable.transform.position - size * 0.5f;
         for (int x = Mathf.FloorToInt(bottomLeft.x); x < Mathf.CeilToInt(bottomLeft.x + size.x); x++) {
             for (int z = Mathf.FloorToInt(bottomLeft.z); z < Mathf.CeilToInt(bottomLeft.z + size.z); z++) {
-                occupiedGrid.Add(new Vector2Int(x, z), new Tile(placeable));
+                AddOrUpdateTileGrid(x, z, placeable);
             }
+        }
+    }
+
+    private void AddOrUpdateTileGrid(int x, int z, PlaceableBehavior placeable) {
+        Vector2Int key = new Vector2Int(x, z);
+        if (occupiedGrid.ContainsKey(key)) {
+            occupiedGrid[key].UpdateTile(placeable);
+        } else {
+            occupiedGrid.Add(key, new Tile(placeable));
         }
     }
 
@@ -65,6 +74,14 @@ public class Tile {
     public OreType ore = OreType.NONE;
 
     public Tile(PlaceableBehavior placeable) {
+        SetTile(placeable);
+    }
+
+    public void UpdateTile(PlaceableBehavior placeable) {
+        SetTile(placeable);
+    }
+
+    private void SetTile(PlaceableBehavior placeable) {
         this.placeable = placeable;
     }
 

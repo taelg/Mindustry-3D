@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlaceableGhostBehavior : PlaceableBehavior {
 
+
     [SerializeField] private Material materialBlue;
     [SerializeField] private Material materialRed;
     [SerializeField] private MeshRenderer[] meshRenderers;
@@ -25,5 +26,13 @@ public class PlaceableGhostBehavior : PlaceableBehavior {
         }
     }
 
+    public PlaceableBehavior Build() {
+        PlaceableBehavior placeable = PoolManager.Instance.GetPoolByType(type).GetNext().GetComponent<PlaceableBehavior>();
+        placeable.transform.position = this.transform.position;
+        placeable.transform.forward = this.transform.forward;
+        this.gameObject.SetActive(false);
+        GridSystemManager.Instance.TakeSpace(placeable);
+        return placeable;
+    }
 
 }
