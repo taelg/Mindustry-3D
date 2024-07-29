@@ -612,8 +612,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6798eb13f338be4d99bf6e54a45f803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectToPool: {fileID: 7305840690689623842, guid: 247dff98e0863614992298f0834bf719, type: 3}
-  poolSize: 200
+  objectToPool: {fileID: 7305840690689623842, guid: 87c1ddeeb01043e43aa2af40dc6ab7da, type: 3}
+  poolSize: 50
 --- !u!1 &541435350
 GameObject:
   m_ObjectHideFlags: 0
@@ -1900,7 +1900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectToPool: {fileID: 2498490901268224240, guid: e8a26428e0955fd4baa93e508c57b955, type: 3}
-  poolSize: 200
+  poolSize: 50
 --- !u!1 &1000389965
 GameObject:
   m_ObjectHideFlags: 0
@@ -2448,7 +2448,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectToPool: {fileID: 2498490901268224240, guid: 19260fcb54414b84888d2e88cce07784, type: 3}
-  poolSize: 200
+  poolSize: 50
 --- !u!4 &1132141291
 Transform:
   m_ObjectHideFlags: 0
@@ -2721,8 +2721,8 @@ MonoBehaviour:
     poolBehavior: {fileID: 1000106997}
     ghostPoolBehavior: {fileID: 1132141290}
   - placeableType: 1
-    poolBehavior: {fileID: 0}
-    ghostPoolBehavior: {fileID: 0}
+    poolBehavior: {fileID: 82357010}
+    ghostPoolBehavior: {fileID: 530034127}
 --- !u!4 &1362201100
 Transform:
   m_ObjectHideFlags: 0

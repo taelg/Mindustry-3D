@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class PlayerBuildToolBehavior : MonoBehaviour {
 
-    [SerializeField] private float radius;
-    [SerializeField] private float buildSpeed;
+    [SerializeField] private float radiusRange;
     [SerializeField] private SphereCollider sphereCollider;
     [SerializeField] private LightBeamBehavior lightBeam;
 
     private List<PlaceableGhostBehavior> ghostsInRange = new List<PlaceableGhostBehavior>();
 
     private void Awake() {
-        sphereCollider.radius = radius;
+        sphereCollider.radius = radiusRange;
     }
 
     private void Update() {
@@ -22,7 +21,7 @@ public class PlayerBuildToolBehavior : MonoBehaviour {
 
     private void UpdateGhostsInRange() {
         ghostsInRange.Clear();
-        Collider[] collidersInside = Physics.OverlapSphere(transform.position, radius);
+        Collider[] collidersInside = Physics.OverlapSphere(transform.position, radiusRange);
 
         foreach (Collider collider in collidersInside) {
             PlaceableGhostBehavior ghost = collider.transform.GetComponent<PlaceableGhostBehavior>();

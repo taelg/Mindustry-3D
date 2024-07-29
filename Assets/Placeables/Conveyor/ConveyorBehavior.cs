@@ -16,14 +16,13 @@ public class ConveyorBehavior : FlowStructureBehavior {
 
     public void OnPlace(Vector3 outputDir) {
         this.outputDir = outputDir;
+        UpdateConveyorInputs();
     }
 
     private void OnEnable() {
         outputDir = this.transform.forward;
         outputs.Clear();
         outputs.Add(outputDir);
-        Debug.DrawRay(this.transform.position, outputDir, Color.blue, 180);
-        UpdateConveyorInputs();
     }
 
     public Vector3 GetOutputDirection() {

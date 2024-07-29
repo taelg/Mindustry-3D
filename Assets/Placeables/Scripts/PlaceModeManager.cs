@@ -18,11 +18,17 @@ public class PlaceModeManager : SingletonBehavior<PlaceModeManager> {
 
     public void StartMode(PlaceableType placeableType) {
         this.placeableType = placeableType;
-        this.mainPlaceableGhost = PoolManager.Instance.GetPoolGhostByType(placeableType).GetNext().GetComponent<PlaceableGhostBehavior>();
+        this.mainPlaceableGhost = GetNewPlaceableByType(placeableType);
         isActive = true;
         mainPlaceableGhost.transform.SetParent(placeableParent);
         mainPlaceableGhost.gameObject.SetActive(true);
         Camera.main.GetComponent<CameraZoomBehavior>().enabled = false;
+    }
+
+    private PlaceableGhostBehavior GetNewPlaceableByType(PlaceableType placeableType) {
+        PoolBehavior pool = PoolManager.Instance.GetPoolGhostByType(placeableType);
+        GameObject placeable = pool.GetNext();
+        return placeable.GetComponent<PlaceableGhostBehavior>();
     }
 
     public void EndMode() {
