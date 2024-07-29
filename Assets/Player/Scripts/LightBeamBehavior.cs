@@ -16,7 +16,6 @@ public class LightBeamBehavior : MonoBehaviour {
         meshFilter = GetComponent<MeshFilter>();
     }
 
-
     public void SetLightBeamTarget(PlaceableGhostBehavior ghost) {
         this.gameObject.SetActive(true);
         target = ghost;
@@ -40,7 +39,7 @@ public class LightBeamBehavior : MonoBehaviour {
         }
     }
 
-    void DrawLightCone() {
+    void DrawLightCone() { //TODO apply clean code to this class.
         Vector3 startPosition = source.position;
         Vector3 endPosition = target.transform.position;
 
