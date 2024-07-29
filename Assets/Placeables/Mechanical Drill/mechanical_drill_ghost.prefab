@@ -95,7 +95,7 @@ GameObject:
   m_Component:
   - component: {fileID: 934448511209709444}
   - component: {fileID: 5067795003557632011}
-  - component: {fileID: -6192978616416186854}
+  - component: {fileID: 3522464481991729039}
   m_Layer: 0
   m_Name: mechanical_drill_ghost
   m_TagString: Placeable Ghost
@@ -141,7 +141,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 0.5, z: 2}
   m_Center: {x: 0, y: 0.25, z: 0}
---- !u!114 &-6192978616416186854
+--- !u!114 &3522464481991729039
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -150,12 +150,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2498490901268224240}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0ce18809785ba444b4d36e30375fef4, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ca1b5f843e244045a31319444f1333b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boxCollider: {fileID: 5067795003557632011}
   materialBlue: {fileID: 2100000, guid: fe0fc3e6302b45a47bae6dbcb29bf6ce, type: 2}
   materialRed: {fileID: 2100000, guid: 5b70e7a863c829446a6854595793c515, type: 2}
-  boxCollider: {fileID: 5067795003557632011}
   meshRenderers:
   - {fileID: 775516686051329105}
   - {fileID: 1810089652524776721}

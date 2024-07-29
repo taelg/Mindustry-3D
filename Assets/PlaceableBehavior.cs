@@ -3,6 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
 public class PlaceableBehavior : MonoBehaviour {
+    [SerializeField] protected PlaceableType type;
     [SerializeField] protected BoxCollider boxCollider;
 
     public void TryPlace() {

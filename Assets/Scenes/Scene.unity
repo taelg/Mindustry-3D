@@ -4320,7 +4320,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: core_shard
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1438851959376959215, guid: a5646b5afd5c5064f8e55b2cbfac04b2, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
