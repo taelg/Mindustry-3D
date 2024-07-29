@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
 
 public class PoolBehavior : MonoBehaviour {
@@ -6,7 +8,6 @@ public class PoolBehavior : MonoBehaviour {
     [Header("Internal")]
     [SerializeField] private GameObject objectToPool;
     [SerializeField] private int poolSize;
-    [SerializeField] private Transform poolParent;
 
     private List<GameObject> pooledObjects;
     private int limitExceedIn = 0;
@@ -32,7 +33,7 @@ public class PoolBehavior : MonoBehaviour {
     private GameObject InstantiateNewClone() {
         GameObject clone = Instantiate(objectToPool);
         clone.SetActive(false);
-        clone.transform.SetParent(poolParent);
+        clone.transform.SetParent(this.transform);
         pooledObjects.Add(clone);
         return clone;
     }
@@ -59,8 +60,15 @@ public class PoolBehavior : MonoBehaviour {
             clone = InstantiateNewClone();
         }
 
+        clone.GetComponent<IPoolableItem>().Reset();
         clone.SetActive(true);
+        StartCoroutine(RetrieveCloneOnDisable(clone));
         return clone;
+    }
+
+    private IEnumerator RetrieveCloneOnDisable(GameObject clone) {
+        yield return new WaitUntil(() => !clone.activeSelf);
+        clone.transform.SetParent(this.transform);
     }
 
     private GameObject GetFirstAvailableClone() {

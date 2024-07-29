@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class PlaceModeManager : SingletonBehavior<PlaceModeManager> {
 
-    //Place Mode
     [SerializeField] private Transform placeableParent;
-
     private bool isActive = false;
     private PlaceableType placeableType;
     private PlaceableGhostBehavior mainPlaceableGhost;
@@ -22,6 +20,7 @@ public class PlaceModeManager : SingletonBehavior<PlaceModeManager> {
         this.placeableType = placeableType;
         this.mainPlaceableGhost = PoolManager.Instance.GetPoolGhostByType(placeableType).GetNext().GetComponent<PlaceableGhostBehavior>();
         isActive = true;
+        mainPlaceableGhost.transform.SetParent(placeableParent);
         mainPlaceableGhost.gameObject.SetActive(true);
         Camera.main.GetComponent<CameraZoomBehavior>().enabled = false;
     }
@@ -44,7 +43,7 @@ public class PlaceModeManager : SingletonBehavior<PlaceModeManager> {
 
     private void MovePlaceableToMouse() {
         if (isActive && !isDragging) {
-            Vector3 position = RaycastUtils.GetMouseWorldPosition(Camera.main);
+            Vector3 position = GetDragCurrentPosition();
             position = GridSystemManager.Instance.GetPositionSnappedToGrid(position, mainPlaceableGhost.GetSize());
             mainPlaceableGhost.transform.position = position;
         }
@@ -52,7 +51,7 @@ public class PlaceModeManager : SingletonBehavior<PlaceModeManager> {
 
     private void UpdateMainPaceablePreview() {
         if (isActive && !isDragging) {
-            mainPlaceableGhost.GetComponent<PlaceableGhostBehavior>().Preview();
+            mainPlaceableGhost.UpdatePreview();
         }
     }
 
@@ -77,15 +76,16 @@ public class PlaceModeManager : SingletonBehavior<PlaceModeManager> {
         for (int i = 0; i < count; i++) {
             currentDistance += distancePerPrefab;
             GameObject ghostPrefab = PoolManager.Instance.GetPoolGhostByType(placeableType).GetNext();
-            PlaceableGhostBehavior ghost = ghostPrefab.GetComponent<PlaceableGhostBehavior>();
+            ghostPrefab.transform.SetParent(placeableParent);
             ghostPrefab.transform.position = currentDistance;
-            ghost.Preview();
-            ghostPreviews.Add(ghost);
+            PlaceableGhostBehavior ghostBehavior = ghostPrefab.GetComponent<PlaceableGhostBehavior>();
+            ghostBehavior.UpdatePreview();
+            ghostPreviews.Add(ghostBehavior);
         }
     }
 
     public int GetAdditionalPlaceablesNeeded() {
-        Vector3 dragPosition = RaycastUtils.GetMouseWorldPosition(Camera.main);
+        Vector3 dragPosition = GetDragCurrentPosition();
         float dragLenghtX = Mathf.Abs(dragInitialPos.x - dragPosition.x);
         float dragLenghtZ = Mathf.Abs(dragInitialPos.z - dragPosition.z);
 
@@ -139,18 +139,20 @@ public class PlaceModeManager : SingletonBehavior<PlaceModeManager> {
 
     private Vector3 GetDragCurrentPosition() {
         return RaycastUtils.GetMouseWorldPosition(Camera.main);
-        //Vector3 position = RaycastUtils.GetMouseWorldPosition(activeCamera);
-        //position = GetPositionSnappedToGrid(position);
-        //return position;
     }
 
     private void PlaceGhostPreviews() {
         foreach (PlaceableGhostBehavior ghost in ghostPreviews) {
-            ghost.TryPlace();
+            bool placed = ghost.TryPlace();
+            ghost.SetReadyToBuild(placed);
         }
+
         ghostPreviews.Clear();
-        mainPlaceableGhost.GetComponent<PlaceableGhostBehavior>().TryPlace();
+        bool mainPlaced = mainPlaceableGhost.TryPlace();
+        mainPlaceableGhost.SetReadyToBuild(mainPlaced);
+
         this.mainPlaceableGhost = PoolManager.Instance.GetPoolGhostByType(placeableType).GetNext().GetComponent<PlaceableGhostBehavior>();
+        this.mainPlaceableGhost.transform.SetParent(placeableParent);
     }
 
     private Vector3 GetDragDirection() {

@@ -1,17 +1,18 @@
-using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class PlaceableBehavior : MonoBehaviour {
+public class PlaceableBehavior : MonoBehaviour, IPoolableItem {
     [SerializeField] protected PlaceableType type;
     [SerializeField] protected BoxCollider boxCollider;
 
-    public void TryPlace() {
+    public bool TryPlace() {
         bool isEnoughtSpace = GridSystemManager.Instance.IsGridEmpty(this);
         if (isEnoughtSpace) {
             GridSystemManager.Instance.TakeSpace(this);
+            return true;
         } else {
             this.gameObject.SetActive(false);
+            return false;
         }
     }
 
@@ -19,5 +20,6 @@ public class PlaceableBehavior : MonoBehaviour {
         return boxCollider.size;
     }
 
+    public void Reset() { }
 
 }
