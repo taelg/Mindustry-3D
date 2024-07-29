@@ -1060,7 +1060,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.75
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -2650,6 +2650,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1204724337}
   m_CullTransparentMesh: 1
+--- !u!65 &1287544242 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 9083538825596474660, guid: a5646b5afd5c5064f8e55b2cbfac04b2, type: 3}
+  m_PrefabInstance: {fileID: 6696851160814604571}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1291569240
 GameObject:
   m_ObjectHideFlags: 0
@@ -3470,6 +3475,17 @@ Transform:
   - {fileID: 249436103}
   m_Father: {fileID: 592118029}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1820572910 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8795987135763142280, guid: 82f8c321894824e4292ec129ff04ed35, type: 3}
+  m_PrefabInstance: {fileID: 3960233031311018486}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81fefbfbf608e6e45bca9881f2f608ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1828371197
 GameObject:
   m_ObjectHideFlags: 0
@@ -4102,6 +4118,46 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 606684236}
     m_Modifications:
+    - target: {fileID: 630691618141816698, guid: 82f8c321894824e4292ec129ff04ed35, type: 3}
+      propertyPath: lightBeam
+      value: 
+      objectReference: {fileID: 1820572910}
+    - target: {fileID: 2845292229389795121, guid: 82f8c321894824e4292ec129ff04ed35, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2845292229389795121, guid: 82f8c321894824e4292ec129ff04ed35, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2845292229389795121, guid: 82f8c321894824e4292ec129ff04ed35, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2845292229389795121, guid: 82f8c321894824e4292ec129ff04ed35, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2845292229389795121, guid: 82f8c321894824e4292ec129ff04ed35, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2845292229389795121, guid: 82f8c321894824e4292ec129ff04ed35, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2845292229389795121, guid: 82f8c321894824e4292ec129ff04ed35, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2845292229389795121, guid: 82f8c321894824e4292ec129ff04ed35, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2845292229389795121, guid: 82f8c321894824e4292ec129ff04ed35, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3435342667232437646, guid: 82f8c321894824e4292ec129ff04ed35, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4150,6 +4206,26 @@ PrefabInstance:
       propertyPath: rigidBody
       value: 
       objectReference: {fileID: 6695573333970369218}
+    - target: {fileID: 8541450483291254155, guid: 82f8c321894824e4292ec129ff04ed35, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7c0d8453bf1bf5742a3af0bbcb233ccd, type: 2}
+    - target: {fileID: 8795987135763142280, guid: 82f8c321894824e4292ec129ff04ed35, type: 3}
+      propertyPath: source
+      value: 
+      objectReference: {fileID: 6314227909629435908}
+    - target: {fileID: 8795987135763142280, guid: 82f8c321894824e4292ec129ff04ed35, type: 3}
+      propertyPath: endTransform
+      value: 
+      objectReference: {fileID: 416058185}
+    - target: {fileID: 8795987135763142280, guid: 82f8c321894824e4292ec129ff04ed35, type: 3}
+      propertyPath: endBoxCollider
+      value: 
+      objectReference: {fileID: 1287544242}
+    - target: {fileID: 8795987135763142280, guid: 82f8c321894824e4292ec129ff04ed35, type: 3}
+      propertyPath: startTransform
+      value: 
+      objectReference: {fileID: 6314227909629435908}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

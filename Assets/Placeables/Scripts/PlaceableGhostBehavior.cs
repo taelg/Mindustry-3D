@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class PlaceableGhostBehavior : PlaceableBehavior, IPoolableItem {
 
-
+    [SerializeField] private float buildTime;
     [SerializeField] private Material materialBlue;
     [SerializeField] private Material materialRed;
     [SerializeField] private MeshRenderer[] meshRenderers;
     private bool readyToBuild = false;
+    private float currentBuildingTime = 0;
 
     public void UpdatePreview() {
         UpdateMaterial();
@@ -15,6 +16,7 @@ public class PlaceableGhostBehavior : PlaceableBehavior, IPoolableItem {
 
     public void Reset() {
         readyToBuild = false;
+        currentBuildingTime = 0;
     }
 
     public void SetReadyToBuild(bool readyToBuild) {
@@ -25,19 +27,30 @@ public class PlaceableGhostBehavior : PlaceableBehavior, IPoolableItem {
         return readyToBuild;
     }
 
-    public PlaceableBehavior Build() {
+    public bool AddProgressToBuild(float time) {
         if (readyToBuild) {
-            PlaceableBehavior placeable = PoolManager.Instance.GetPoolByType(type).GetNext().GetComponent<PlaceableBehavior>();
-            placeable.transform.position = this.transform.position;
-            placeable.transform.forward = this.transform.forward;
-            placeable.transform.SetParent(this.transform.parent);
-            this.gameObject.SetActive(false);
-            GridSystemManager.Instance.TakeSpace(placeable);
-            return placeable;
+            currentBuildingTime += time;
+            if (IsBuildCompleted()) {
+                FinishBuild();
+                return true;
+            }
         } else {
-            Debug.LogError("You can't calling Build on a Placeable not yet ready to build.");
-            return null;
+            Debug.LogError("You can't call AddProgressToBuild to a GhostPlaceable not yet ready to build.");
         }
+        return false;
+    }
+
+    public bool IsBuildCompleted() {
+        return currentBuildingTime >= buildTime;
+    }
+
+    private void FinishBuild() {
+        PlaceableBehavior placeable = PoolManager.Instance.GetPoolByType(type).GetNext().GetComponent<PlaceableBehavior>();
+        placeable.transform.position = this.transform.position;
+        placeable.transform.forward = this.transform.forward;
+        placeable.transform.SetParent(this.transform.parent);
+        this.gameObject.SetActive(false);
+        GridSystemManager.Instance.TakeSpace(placeable);
     }
 
     private void UpdateMaterial() {

@@ -7,6 +7,7 @@ public class PlayerBuildToolBehavior : MonoBehaviour {
     [SerializeField] private float radius;
     [SerializeField] private float buildSpeed;
     [SerializeField] private SphereCollider sphereCollider;
+    [SerializeField] private LightBeamBehavior lightBeam;
 
     private List<PlaceableGhostBehavior> ghostsInRange = new List<PlaceableGhostBehavior>();
 
@@ -34,8 +35,10 @@ public class PlayerBuildToolBehavior : MonoBehaviour {
     private void BuildNearestGhost() {
         PlaceableGhostBehavior ghost = GetNearestGhost(GetReadyToBuildGhosts());
         if (ghost) {
-            ghost.Build();
+            lightBeam.SetLightBeamTarget(ghost);
+            ghost.AddProgressToBuild(Time.deltaTime);
             ghostsInRange.Remove(ghost);
+
         }
     }
 

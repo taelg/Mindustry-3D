@@ -156,6 +156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   boxCollider: {fileID: 5067795003557632011}
+  buildTime: 0.15
   materialBlue: {fileID: 2100000, guid: fe0fc3e6302b45a47bae6dbcb29bf6ce, type: 2}
   materialRed: {fileID: 2100000, guid: 5b70e7a863c829446a6854595793c515, type: 2}
   meshRenderers:
