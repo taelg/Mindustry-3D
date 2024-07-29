@@ -6218,9 +6218,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8132c9a4a09bdda4c9b7629d729329e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radiusRange: 0
+  radiusRange: 50
   sphereCollider: {fileID: 6942270107999764975}
-  lightBeam: {fileID: 0}
+  lightBeam: {fileID: 8795987135763142280}
 --- !u!1 &6280345417935519994
 GameObject:
   m_ObjectHideFlags: 0

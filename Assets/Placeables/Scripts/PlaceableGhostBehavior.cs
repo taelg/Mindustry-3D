@@ -14,7 +14,7 @@ public class PlaceableGhostBehavior : PlaceableBehavior, IPoolableItem {
         UpdateMaterial();
     }
 
-    public void Reset() {
+    public override void Reset() {
         readyToBuild = false;
         currentBuildingTime = 0;
     }
@@ -51,6 +51,7 @@ public class PlaceableGhostBehavior : PlaceableBehavior, IPoolableItem {
         placeable.transform.SetParent(this.transform.parent);
         this.gameObject.SetActive(false);
         GridSystemManager.Instance.TakeSpace(placeable);
+        placeable.GetComponent<IBuildable>().OnBuild();
     }
 
     private void UpdateMaterial() {

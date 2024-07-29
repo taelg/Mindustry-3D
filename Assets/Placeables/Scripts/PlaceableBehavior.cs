@@ -16,10 +16,14 @@ public class PlaceableBehavior : MonoBehaviour, IPoolableItem {
         }
     }
 
+    public virtual void Reset() { }
+
     public Vector3 GetSize() {
+        if (!boxCollider)
+            boxCollider = this.transform.GetComponent<BoxCollider>();
+
         return boxCollider.size;
     }
 
-    public void Reset() { }
 
 }

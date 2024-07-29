@@ -69,6 +69,7 @@ public class PoolBehavior : MonoBehaviour {
     private IEnumerator RetrieveCloneOnDisable(GameObject clone) {
         yield return new WaitUntil(() => !clone.activeSelf);
         clone.transform.SetParent(this.transform);
+        clone.transform.forward = Vector3.forward;
     }
 
     private GameObject GetFirstAvailableClone() {

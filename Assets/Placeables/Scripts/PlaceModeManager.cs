@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlaceModeManager : SingletonBehavior<PlaceModeManager> {
+public class PlaceModeManager : SingletonBehavior<PlaceModeManager> { //TODO: Refactor to impove quality
 
     [SerializeField] private Transform placeableParent;
     private bool isActive = false;
@@ -52,6 +52,8 @@ public class PlaceModeManager : SingletonBehavior<PlaceModeManager> {
             Vector3 position = GetDragCurrentPosition();
             position = GridSystemManager.Instance.GetPositionSnappedToGrid(position, mainPlaceableGhost.GetSize());
             mainPlaceableGhost.transform.position = position;
+        } else if (isActive && isDragging) {
+            mainPlaceableGhost.transform.forward = GetDragDirection();
         }
     }
 
@@ -64,7 +66,7 @@ public class PlaceModeManager : SingletonBehavior<PlaceModeManager> {
     private void HandleAdditionalPlaceables() {
         if (isActive && isDragging) {
             DisableAllGhosts();
-            int additionalCount = GetAdditionalPlaceablesNeeded();
+            int additionalCount = GetAdditionalPlaceablesNeededCount();
             AddGhostPreview(additionalCount);
         }
     }
@@ -84,13 +86,14 @@ public class PlaceModeManager : SingletonBehavior<PlaceModeManager> {
             GameObject ghostPrefab = PoolManager.Instance.GetPoolGhostByType(placeableType).GetNext();
             ghostPrefab.transform.SetParent(placeableParent);
             ghostPrefab.transform.position = currentDistance;
+            ghostPrefab.transform.forward = GetDragDirection();
             PlaceableGhostBehavior ghostBehavior = ghostPrefab.GetComponent<PlaceableGhostBehavior>();
             ghostBehavior.UpdatePreview();
             ghostPreviews.Add(ghostBehavior);
         }
     }
 
-    public int GetAdditionalPlaceablesNeeded() {
+    public int GetAdditionalPlaceablesNeededCount() {
         Vector3 dragPosition = GetDragCurrentPosition();
         float dragLenghtX = Mathf.Abs(dragInitialPos.x - dragPosition.x);
         float dragLenghtZ = Mathf.Abs(dragInitialPos.z - dragPosition.z);

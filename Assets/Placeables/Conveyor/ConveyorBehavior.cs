@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConveyorBehavior : FlowStructureBehavior {
+public class ConveyorBehavior : FlowStructureBehavior, IBuildable {
 
     [Header("Internal")]
-    [SerializeField] private Transform rayOrigin;
     [SerializeField] private MeshRenderer belt;
     [SerializeField] private Material oneInput;
     [SerializeField] private Material oneInputCurve;
@@ -14,15 +13,11 @@ public class ConveyorBehavior : FlowStructureBehavior {
 
     public Vector3 outputDir;
 
-    public void OnPlace(Vector3 outputDir) {
-        this.outputDir = outputDir;
-        UpdateConveyorInputs();
-    }
-
-    private void OnEnable() {
+    public void OnBuild() {
         outputDir = this.transform.forward;
         outputs.Clear();
         outputs.Add(outputDir);
+        UpdateConveyorInputs();
     }
 
     public Vector3 GetOutputDirection() {
@@ -80,10 +75,10 @@ public class ConveyorBehavior : FlowStructureBehavior {
         if (direction == outputDir)
             return null;
 
-        Ray ray = new Ray(rayOrigin.transform.position, direction);
+        Ray ray = new Ray(transform.position, direction);
         RaycastHit hit;
         Physics.Raycast(ray, out hit, 1f);
-        Debug.DrawRay(rayOrigin.transform.position, direction, Color.green, 10);
+        Debug.DrawRay(transform.position, direction, Color.green, 10);
         bool hitSomething = !hit.transform;
         if (hitSomething)
             return null;

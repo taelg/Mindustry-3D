@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class MechanicalDrillBehavior : MonoBehaviour {
+public class MechanicalDrillBehavior : MonoBehaviour, IBuildable {
 
 
     [Header("Configurable")]
@@ -25,6 +25,17 @@ public class MechanicalDrillBehavior : MonoBehaviour {
 
     private float currentSpeed = 0;
 
+
+    public void OnBuild() {
+        //TODO: Fix model. The model show some imperfection on rotate.
+        this.transform.forward = Vector3.forward;
+    }
+
+    private void Update() {
+        SpinDrill();
+        RestartDrill();
+    }
+
     private void StartDrill() {
         acceleration = drillSpeed / (secondsToMaxSpeed / 0.02f);
         starting = true;
@@ -38,11 +49,6 @@ public class MechanicalDrillBehavior : MonoBehaviour {
         StopAllCoroutines();
         StartCoroutine(SpeedDownDrill());
         StopCoroutine(Production());
-    }
-
-    private void Update() {
-        SpinDrill();
-        RestartDrill();
     }
 
     private void SpinDrill() {
