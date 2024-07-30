@@ -7,13 +7,11 @@ public class PlaceableBehavior : MonoBehaviour, IPoolableItem {
 
     public bool TryPlace() {
         bool isEnoughtSpace = GridSystemManager.Instance.IsGridEmpty(this);
-        if (isEnoughtSpace) {
-            GridSystemManager.Instance.TakeSpace(this);
-            return true;
-        } else {
-            this.gameObject.SetActive(false);
+        if (!isEnoughtSpace)
             return false;
-        }
+
+        GridSystemManager.Instance.TakeSpace(this);
+        return true;
     }
 
     public virtual void Reset() { }

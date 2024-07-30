@@ -5765,7 +5765,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   source: {fileID: 3435342667232437646}
-  segments: 20
+  segments: 25
   radius: 1
 --- !u!1 &4428385170321233080
 GameObject:
@@ -6218,8 +6218,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8132c9a4a09bdda4c9b7629d729329e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radiusRange: 50
-  sphereCollider: {fileID: 6942270107999764975}
   lightBeam: {fileID: 8795987135763142280}
 --- !u!1 &6280345417935519994
 GameObject:

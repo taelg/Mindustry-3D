@@ -56,6 +56,16 @@ public class GridSystemManager : SingletonBehavior<GridSystemManager> {
         }
     }
 
+    public void LeaveSpace(PlaceableBehavior placeable) {
+        Vector3 size = placeable.GetSize();
+        Vector3 bottomLeft = placeable.transform.position - size * 0.5f;
+        for (int x = Mathf.FloorToInt(bottomLeft.x); x < Mathf.CeilToInt(bottomLeft.x + size.x); x++) {
+            for (int z = Mathf.FloorToInt(bottomLeft.z); z < Mathf.CeilToInt(bottomLeft.z + size.z); z++) {
+                AddOrUpdateTileGrid(x, z, null);
+            }
+        }
+    }
+
     private void AddOrUpdateTileGrid(int x, int z, PlaceableBehavior placeable) {
         Vector2Int key = new Vector2Int(x, z);
         if (occupiedGrid.ContainsKey(key)) {

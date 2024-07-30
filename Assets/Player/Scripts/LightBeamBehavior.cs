@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Specialized;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
@@ -8,7 +9,6 @@ public class LightBeamBehavior : MonoBehaviour {
     [SerializeField] private float radius = 1.0f;
 
     private MeshFilter meshFilter;
-    private Transform endPosition;
     private BoxCollider boxCollider;
     private PlaceableGhostBehavior target;
 
@@ -19,9 +19,7 @@ public class LightBeamBehavior : MonoBehaviour {
     public void SetLightBeamTarget(PlaceableGhostBehavior ghost) {
         this.gameObject.SetActive(true);
         target = ghost;
-        endPosition = ghost.transform;
         this.boxCollider = ghost.GetComponent<BoxCollider>();
-        segments = 20;
         StartCoroutine(RemoveTargetAfterBuild(ghost));
     }
 
@@ -39,9 +37,10 @@ public class LightBeamBehavior : MonoBehaviour {
         }
     }
 
-    void DrawLightCone() { //TODO apply clean code to this class.
+    private void DrawLightCone() {
         Vector3 startPosition = source.position;
         Vector3 endPosition = target.transform.position;
+        endPosition = new Vector3(endPosition.x, 1f, endPosition.z);
 
         // Get the size of the box collider
         Vector3 boxSize = boxCollider.size;
@@ -52,7 +51,7 @@ public class LightBeamBehavior : MonoBehaviour {
         // Create the mesh
         Mesh mesh = new Mesh();
         Vector3[] vertices = new Vector3[segments + 2];
-        int[] triangles = new int[segments * 3];
+        int[] triangles = new int[segments * 6];
 
         // Set the start position as the first vertex
         vertices[0] = source.InverseTransformPoint(startPosition);
@@ -62,17 +61,25 @@ public class LightBeamBehavior : MonoBehaviour {
         for (int i = 0; i < segments; i++) {
             float angle = i * angleStep * Mathf.Deg2Rad;
             Vector3 offset = new Vector3(Mathf.Cos(angle) * radius, 0, Mathf.Sin(angle) * radius);
-            vertices[i + 1] = this.source.InverseTransformPoint(endPosition + offset);
+            vertices[i + 1] = source.InverseTransformPoint(endPosition + offset);
         }
 
         // Set the end position as the last vertex
-        vertices[segments + 1] = this.source.InverseTransformPoint(endPosition);
+        vertices[segments + 1] = source.InverseTransformPoint(endPosition);
 
-        // Create the triangles
+        // Create the triangles for the cone sides
         for (int i = 0; i < segments; i++) {
             triangles[i * 3] = 0;
             triangles[i * 3 + 1] = i + 1;
             triangles[i * 3 + 2] = (i + 1) % segments + 1;
+        }
+
+        // Create the triangles for the base
+        int baseIndex = segments * 3;
+        for (int i = 0; i < segments; i++) {
+            triangles[baseIndex + i * 3] = segments + 1;
+            triangles[baseIndex + i * 3 + 1] = (i + 1) % segments + 1;
+            triangles[baseIndex + i * 3 + 2] = i + 1;
         }
 
         mesh.vertices = vertices;

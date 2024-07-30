@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class MechanicalDrillBehavior : MonoBehaviour, IBuildable {
+public class MechanicalDrillBehavior : FlowStructureBehavior, IBuildable {
 
 
     [Header("Configurable")]

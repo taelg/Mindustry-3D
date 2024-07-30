@@ -266,6 +266,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9873e862782b996488d587f5d48a1b97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputs: []
+  outputs:
+  - {x: 1, y: 0, z: 0}
+  - {x: -1, y: 0, z: 0}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: -1}
   tier: 1
   drillTime: 11
   maxOreCapacity: 10

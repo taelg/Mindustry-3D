@@ -1,66 +1,44 @@
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class PlayerBuildToolBehavior : MonoBehaviour {
 
-    [SerializeField] private float radiusRange;
-    [SerializeField] private SphereCollider sphereCollider;
     [SerializeField] private LightBeamBehavior lightBeam;
 
-    private List<PlaceableGhostBehavior> ghostsInRange = new List<PlaceableGhostBehavior>();
+    private PlaceableGhostBehavior currentGhost;
+    private PlaceableGhostBehavior currentDestroy;
 
-    private void Awake() {
-        sphereCollider.radius = radiusRange;
-    }
 
     private void Update() {
-        UpdateGhostsInRange();
-        BuildNearestGhost();
+        UpdateCurrentGhost();
+        BuildNextGhost();
+
+        DestroyPlaceables();
     }
 
-    private void UpdateGhostsInRange() {
-        ghostsInRange.Clear();
-        Collider[] collidersInside = Physics.OverlapSphere(transform.position, radiusRange);
+    private void UpdateCurrentGhost() {
+        if (!currentGhost && PlaceModeManager.Instance.placedGhosts.Count > 0) {
+            currentGhost = PlaceModeManager.Instance.placedGhosts.Dequeue();
+        }
+    }
 
-        foreach (Collider collider in collidersInside) {
-            PlaceableGhostBehavior ghost = collider.transform.GetComponent<PlaceableGhostBehavior>();
-            if (ghost) {
-                ghostsInRange.Add(ghost);
+    private void BuildNextGhost() {
+        if (currentGhost) {
+            lightBeam.SetLightBeamTarget(currentGhost);
+            bool finished = currentGhost.AddProgressToBuild(Time.deltaTime);
+            if (finished) {
+                currentGhost = null;
             }
         }
     }
 
-    private void BuildNearestGhost() {
-        PlaceableGhostBehavior ghost = GetNearestGhost(GetReadyToBuildGhosts());
-        if (ghost) {
-            lightBeam.SetLightBeamTarget(ghost);
-            ghost.AddProgressToBuild(Time.deltaTime);
-            ghostsInRange.Remove(ghost);
-
-        }
-    }
-
-
-    private List<PlaceableGhostBehavior> GetReadyToBuildGhosts() {
-        return ghostsInRange.Where(ghost => ghost.IsReadyToBuild()).ToList();
-    }
-
-    private PlaceableGhostBehavior GetNearestGhost(List<PlaceableGhostBehavior> readyToBuild) {
-        PlaceableGhostBehavior nearestGhost = null;
-        float nearestDistance = float.MaxValue;
-
-        foreach (PlaceableGhostBehavior ghost in readyToBuild) {
-            float distance = (ghost.transform.position - transform.position).magnitude;
-            if (distance < nearestDistance) {
-                nearestGhost = ghost;
-                nearestDistance = distance;
-            }
+    private void DestroyPlaceables() {
+        while (PlaceModeManager.Instance.placeablesToDestroy.Count > 0) {
+            PlaceableBehavior placeable = PlaceModeManager.Instance.placeablesToDestroy.Dequeue();
+            GridSystemManager.Instance.LeaveSpace(placeable);
+            placeable.gameObject.SetActive(false);
         }
 
-        return nearestGhost;
     }
-
 
 
 }
