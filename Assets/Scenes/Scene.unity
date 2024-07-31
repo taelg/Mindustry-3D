@@ -197,6 +197,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 65509811}
   m_CullTransparentMesh: 1
+--- !u!1 &80568946
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 80568948}
+  - component: {fileID: 80568947}
+  m_Layer: 0
+  m_Name: MouseInputManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &80568947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 80568946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75722407c81e7ca47b4f54e7b75b146a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &80568948
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 80568946}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &82357008
 GameObject:
   m_ObjectHideFlags: 0
@@ -896,7 +940,7 @@ GameObject:
   m_Component:
   - component: {fileID: 592118029}
   m_Layer: 0
-  m_Name: Placeables Parent
+  m_Name: Placeable Item Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2880,7 +2924,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1523424943}
   - component: {fileID: 1523424942}
-  - component: {fileID: 1523424941}
   m_Layer: 0
   m_Name: GridSystem
   m_TagString: Untagged
@@ -2888,18 +2931,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!156049354 &1523424941
-Grid:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1523424940}
-  m_Enabled: 1
-  m_CellSize: {x: 1, y: 1, z: 0}
-  m_CellGap: {x: 0, y: 0, z: 0}
-  m_CellLayout: 0
-  m_CellSwizzle: 1
 --- !u!114 &1523424942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3107,7 +3138,7 @@ GameObject:
   - component: {fileID: 1654469475}
   - component: {fileID: 1654469474}
   m_Layer: 0
-  m_Name: PlaceMode
+  m_Name: Placement Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3125,8 +3156,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01f7d6257ea6cd442ab558d4c1c59ed9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placeableParent: {fileID: 592118029}
-  destroySelection: {fileID: 2123460207}
+  destroyDragViewer: {fileID: 2123460207}
+  itemsParent: {fileID: 592118029}
 --- !u!4 &1654469475
 Transform:
   m_ObjectHideFlags: 0
@@ -3991,7 +4022,7 @@ GameObject:
   - component: {fileID: 2123460209}
   - component: {fileID: 2123460208}
   m_Layer: 0
-  m_Name: destroySelectionIndicator
+  m_Name: destroy_drag_viewer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4641,3 +4672,4 @@ SceneRoots:
   - {fileID: 1654469475}
   - {fileID: 1362201100}
   - {fileID: 923101454}
+  - {fileID: 80568948}

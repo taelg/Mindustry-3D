@@ -134,7 +134,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputs: []
   outputs: []
-  rayOrigin: {fileID: 0}
   belt: {fileID: 420343234093781012}
   oneInput: {fileID: 2100000, guid: c88a3dcd9b2823641b451a018d60cbca, type: 2}
   oneInputCurve: {fileID: 2100000, guid: b8da2bfc36a138b4aac9147299e61963, type: 2}
@@ -178,6 +177,7 @@ MonoBehaviour:
   type: 1
   boxCollider: {fileID: 2378946545960637546}
   buildTime: 0.05
+  rotable: 1
   materialBlue: {fileID: 2100000, guid: fe0fc3e6302b45a47bae6dbcb29bf6ce, type: 2}
   materialRed: {fileID: 2100000, guid: 5b70e7a863c829446a6854595793c515, type: 2}
   meshRenderers:

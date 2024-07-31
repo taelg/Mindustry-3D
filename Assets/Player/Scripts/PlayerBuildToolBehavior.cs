@@ -4,8 +4,8 @@ public class PlayerBuildToolBehavior : MonoBehaviour {
 
     [SerializeField] private LightBeamBehavior lightBeam;
 
-    private PlaceableGhostBehavior currentGhost;
-    private PlaceableGhostBehavior currentDestroy;
+    private BlueprintBehavior currentGhost;
+    private BlueprintBehavior currentDestroy;
 
 
     private void Update() {
@@ -16,8 +16,8 @@ public class PlayerBuildToolBehavior : MonoBehaviour {
     }
 
     private void UpdateCurrentGhost() {
-        if (!currentGhost && PlaceModeManager.Instance.placedGhosts.Count > 0) {
-            currentGhost = PlaceModeManager.Instance.placedGhosts.Dequeue();
+        if (!currentGhost && PlacementManager.Instance.blueprintsPlaced.Count > 0) {
+            currentGhost = PlacementManager.Instance.blueprintsPlaced.Dequeue();
         }
     }
 
@@ -32,8 +32,8 @@ public class PlayerBuildToolBehavior : MonoBehaviour {
     }
 
     private void DestroyPlaceables() {
-        while (PlaceModeManager.Instance.placeablesToDestroy.Count > 0) {
-            PlaceableBehavior placeable = PlaceModeManager.Instance.placeablesToDestroy.Dequeue();
+        while (PlacementManager.Instance.itemsToDestroy.Count > 0) {
+            PlaceableBehavior placeable = PlacementManager.Instance.itemsToDestroy.Dequeue();
             GridSystemManager.Instance.LeaveSpace(placeable);
             placeable.gameObject.SetActive(false);
         }

@@ -47,7 +47,7 @@ public class PoolBehavior : MonoBehaviour {
             pooledObjects[i].SetActive(false);
     }
 
-    public GameObject GetNext() {
+    public GameObject GetNext(Transform newParent = null) {
         if (!loaded)
             Debug.LogError("Pool not loaded yet, you should not be asking clones yet. Item: " + objectToPool.name);
 
@@ -61,6 +61,7 @@ public class PoolBehavior : MonoBehaviour {
         }
 
         clone.GetComponent<IPoolableItem>().Reset();
+        clone.transform.SetParent(newParent ? newParent : clone.transform.parent);
         clone.SetActive(true);
         StartCoroutine(RetrieveCloneOnDisable(clone));
         return clone;

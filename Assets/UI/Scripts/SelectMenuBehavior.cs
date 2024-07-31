@@ -33,7 +33,8 @@ public class SelectMenuBehavior : MonoBehaviour {
         menuButtons.ToList().ForEach(button => button.AddEventOnClick(() => OnClickSelectPlaceable(button)));
     }
 
-    private void UnselectAllButtons() {
+    public void UnselectAllButtons() {
+        activeButton = null;
         menuButtons.ToList().ForEach(button => button.Unselect());
     }
 
@@ -45,9 +46,9 @@ public class SelectMenuBehavior : MonoBehaviour {
 
     private void UpdatePlaceMode() {
         if (activeButton) {
-            PlaceModeManager.Instance.StartMode(activeButton.GetPlaceableType());
+            PlacementManager.Instance.StartPlaceMode(activeButton.GetPlaceableType());
         } else {
-            PlaceModeManager.Instance.EndMode();
+            PlacementManager.Instance.EndPlaceMode();
         }
     }
 

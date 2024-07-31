@@ -10,20 +10,20 @@ public class LightBeamBehavior : MonoBehaviour {
 
     private MeshFilter meshFilter;
     private BoxCollider boxCollider;
-    private PlaceableGhostBehavior target;
+    private BlueprintBehavior target;
 
     private void Start() {
         meshFilter = GetComponent<MeshFilter>();
     }
 
-    public void SetLightBeamTarget(PlaceableGhostBehavior ghost) {
+    public void SetLightBeamTarget(BlueprintBehavior ghost) {
         this.gameObject.SetActive(true);
         target = ghost;
         this.boxCollider = ghost.GetComponent<BoxCollider>();
         StartCoroutine(RemoveTargetAfterBuild(ghost));
     }
 
-    private IEnumerator RemoveTargetAfterBuild(PlaceableGhostBehavior ghost) {
+    private IEnumerator RemoveTargetAfterBuild(BlueprintBehavior ghost) {
         yield return new WaitUntil(() => ghost.IsBuildCompleted());
         if (target == ghost)
             target = null;

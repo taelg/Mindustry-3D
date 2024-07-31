@@ -12,7 +12,7 @@ public class PoolManager : SingletonBehavior<PoolManager> {
         return poolByType[type];
     }
 
-    public PoolBehavior GetPoolGhostByType(PlaceableType type) {
+    public PoolBehavior GetBlueprintPoolByType(PlaceableType type) {
         return ghostPoolByType[type];
     }
 

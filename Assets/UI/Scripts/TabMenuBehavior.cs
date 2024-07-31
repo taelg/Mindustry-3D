@@ -20,16 +20,14 @@ public class TabMenuBehavior : MonoBehaviour {
     }
 
     private void Update() {
-        if (Input.GetMouseButtonDown(1)) {
-            ResetMenu();
+        if (MouseInputManager.Instance.rightButtonDown) {
+            TurnOffPlaceMode();
         }
     }
 
-    private void ResetMenu() {
-        activePanel = null;
-        CloseAllPanels();
-        UnselectAllButtons();
-        ResetAllPanels();
+    private void TurnOffPlaceMode() {
+        PlacementManager.Instance.EndPlaceMode();
+        UnselectAllPanelsButtons();
     }
 
     private void InitializeButtonActions() {
@@ -44,8 +42,8 @@ public class TabMenuBehavior : MonoBehaviour {
         menuOptions.ToList().ForEach(option => option.button.Unselect());
     }
 
-    private void ResetAllPanels() {
-        menuOptions.ToList().ForEach(option => option.panel.GetComponent<SelectMenuBehavior>().ResetMenu());
+    private void UnselectAllPanelsButtons() {
+        menuOptions.ToList().ForEach(option => option.panel.GetComponent<SelectMenuBehavior>().UnselectAllButtons());
     }
 
     private void TogglePanel(GameObject panel) {

@@ -1,9 +1,10 @@
 using System.Linq;
 using UnityEngine;
 
-public class PlaceableGhostBehavior : PlaceableBehavior, IPoolableItem {
+public class BlueprintBehavior : PlaceableBehavior, IPoolableItem {
 
     [SerializeField] private float buildTime;
+    [SerializeField] private bool rotable;
     [SerializeField] private Material materialBlue;
     [SerializeField] private Material materialRed;
     [SerializeField] private MeshRenderer[] meshRenderers;
@@ -25,6 +26,10 @@ public class PlaceableGhostBehavior : PlaceableBehavior, IPoolableItem {
 
     public bool IsReadyToBuild() {
         return readyToBuild;
+    }
+
+    public bool IsRotable() {
+        return rotable;
     }
 
     public bool AddProgressToBuild(float time) {

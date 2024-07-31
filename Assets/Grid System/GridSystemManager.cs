@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,14 +8,13 @@ public class GridSystemManager : SingletonBehavior<GridSystemManager> {
         base.Awake();
     }
 
-    public void Place(PlaceableGhostBehavior placeable) {
+    public void Place(BlueprintBehavior placeable) {
         placeable.TryPlace();
     }
 
-    public Vector3 GetPositionSnappedToGrid(PlaceableGhostBehavior placeable) {
-        Vector3 position = placeable.transform.position;
-        Vector3 size = placeable.GetSize();
-        return GetPositionSnappedToGrid(position, size);
+    public Tile GetTileOnPos(Vector2Int keyPosition) {
+        bool containsKey = occupiedGrid.ContainsKey(keyPosition);
+        return containsKey ? occupiedGrid[keyPosition] : null;
     }
 
     public Vector3 GetPositionSnappedToGrid(Vector3 position, Vector3 size) {
@@ -73,34 +71,6 @@ public class GridSystemManager : SingletonBehavior<GridSystemManager> {
         } else {
             occupiedGrid.Add(key, new Tile(placeable));
         }
-    }
-
-}
-
-
-public class Tile {
-    public PlaceableBehavior placeable = null;
-
-    public OreType ore = OreType.NONE;
-
-    public Tile(PlaceableBehavior placeable) {
-        SetTile(placeable);
-    }
-
-    public void UpdateTile(PlaceableBehavior placeable) {
-        SetTile(placeable);
-    }
-
-    private void SetTile(PlaceableBehavior placeable) {
-        this.placeable = placeable;
-    }
-
-    public bool IsEmpty() {
-        return placeable == null;
-    }
-
-    public void RemovePlaceable() {
-        placeable = null;
     }
 
 }
