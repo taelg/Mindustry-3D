@@ -4,38 +4,37 @@ public class PlayerBuildToolBehavior : MonoBehaviour {
 
     [SerializeField] private LightBeamBehavior lightBeam;
 
-    private BlueprintBehavior currentGhost;
-    private BlueprintBehavior currentDestroy;
+    private BlueprintBehavior currentBlueprint;
 
 
     private void Update() {
-        UpdateCurrentGhost();
-        BuildNextGhost();
+        UpdateCurrentBlueprint();
+        BuildNextBlueprint();
 
-        DestroyPlaceables();
+        DestroyBuildings();
     }
 
-    private void UpdateCurrentGhost() {
-        if (!currentGhost && PlacementManager.Instance.blueprintsPlaced.Count > 0) {
-            currentGhost = PlacementManager.Instance.blueprintsPlaced.Dequeue();
+    private void UpdateCurrentBlueprint() {
+        if (!currentBlueprint && PlacementManager.Instance.blueprintsPlaced.Count > 0) {
+            currentBlueprint = PlacementManager.Instance.blueprintsPlaced.Dequeue();
         }
     }
 
-    private void BuildNextGhost() {
-        if (currentGhost) {
-            lightBeam.SetLightBeamTarget(currentGhost);
-            bool finished = currentGhost.AddProgressToBuild(Time.deltaTime);
+    private void BuildNextBlueprint() {
+        if (currentBlueprint) {
+            lightBeam.SetLightBeamTarget(currentBlueprint);
+            bool finished = currentBlueprint.AddProgressToBuild(Time.deltaTime);
             if (finished) {
-                currentGhost = null;
+                currentBlueprint = null;
             }
         }
     }
 
-    private void DestroyPlaceables() {
+    private void DestroyBuildings() {
         while (PlacementManager.Instance.itemsToDestroy.Count > 0) {
-            PlaceableBehavior placeable = PlacementManager.Instance.itemsToDestroy.Dequeue();
-            GridSystemManager.Instance.LeaveSpace(placeable);
-            placeable.gameObject.SetActive(false);
+            BuildingBehavior building = PlacementManager.Instance.itemsToDestroy.Dequeue();
+            GridSystemManager.Instance.LeaveSpace(building);
+            building.gameObject.SetActive(false);
         }
 
     }

@@ -177,7 +177,6 @@ GameObject:
   - component: {fileID: 3424763656823949593}
   - component: {fileID: 7874962128704518537}
   - component: {fileID: 2378946545960637546}
-  - component: {fileID: 1928216837229777656}
   m_Layer: 0
   m_Name: convoyer
   m_TagString: Conveyor
@@ -216,9 +215,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   boxCollider: {fileID: 0}
-  inputs: []
-  outputs: []
-  rayOrigin: {fileID: 0}
+  itemCapacity: 3
+  inputDirections: []
+  outputDirections: []
   belt: {fileID: 420343234093781012}
   oneInput: {fileID: 2100000, guid: c88a3dcd9b2823641b451a018d60cbca, type: 2}
   oneInputCurve: {fileID: 2100000, guid: b8da2bfc36a138b4aac9147299e61963, type: 2}
@@ -247,17 +246,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 0.1, z: 1}
   m_Center: {x: 0, y: 0.05, z: 0}
---- !u!114 &1928216837229777656
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7305840690689623842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0ce18809785ba444b4d36e30375fef4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 1
-  boxCollider: {fileID: 2378946545960637546}

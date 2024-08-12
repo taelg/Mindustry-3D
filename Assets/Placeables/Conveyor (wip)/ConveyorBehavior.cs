@@ -1,7 +1,6 @@
-using System.Collections.Generic;
 using UnityEngine;
 
-public class ConveyorBehavior : FlowStructureBehavior, IBuildable {
+public class Conveyor : FlowBuildingBehavior, IPoolableItem {
 
     [Header("Internal")]
     [SerializeField] private MeshRenderer belt;
@@ -13,25 +12,21 @@ public class ConveyorBehavior : FlowStructureBehavior, IBuildable {
 
     public Vector3 outputDir;
 
-    public void OnBuild() {
+    public void Reset() {
         outputDir = this.transform.forward;
-        outputs.Clear();
-        outputs.Add(outputDir);
+    }
+
+    public override void OnBuild() {
+        SetSingleOutputDir(outputDir);
         UpdateConveyorInputs();
     }
 
-    public Vector3 GetOutputDirection() {
-        return outputDir;
-    }
-
     private void UpdateConveyorInputs() {
-        bool incomeForward = (bool)GetNeighbourOutputingToDir(this.transform.forward);
         bool incomeBack = (bool)GetNeighbourOutputingToDir(-this.transform.forward);
         bool incomeRight = (bool)GetNeighbourOutputingToDir(this.transform.right);
         bool incomeLeft = (bool)GetNeighbourOutputingToDir(-this.transform.right);
 
         int inputCount = 0;
-        inputCount += incomeForward ? 1 : 0;
         inputCount += incomeRight ? 1 : 0;
         inputCount += incomeLeft ? 1 : 0;
         inputCount += incomeBack ? 1 : 0;
@@ -60,48 +55,6 @@ public class ConveyorBehavior : FlowStructureBehavior, IBuildable {
             belt.material = treeInputs;
             Debug.Log("treeInputs");
         }
-
-
-
-
-
-    }
-
-    private void FaceDirection(UnityEngine.Vector3 direction) {
-        this.transform.right = direction;
-    }
-
-    private FlowStructureBehavior GetNeighbourOutputingToDir(Vector3 direction) {
-        if (direction == outputDir)
-            return null;
-
-        Ray ray = new Ray(transform.position, direction);
-        RaycastHit hit;
-        Physics.Raycast(ray, out hit, 1f);
-        Debug.DrawRay(transform.position, direction, Color.green, 10);
-        bool hitSomething = !hit.transform;
-        if (hitSomething)
-            return null;
-
-        FlowStructureBehavior flowStruct = hit.transform.GetComponent<FlowStructureBehavior>();
-        bool isFlowStructure = (bool)flowStruct;
-        if (!isFlowStructure)
-            return null;
-
-        List<Vector3> outputs = flowStruct.GetOuputList();
-        bool outputToSelectedDir = false;
-        outputs.ForEach(output => {
-            if (output == (-direction))
-                outputToSelectedDir = true;
-        });
-
-        if (!outputToSelectedDir)
-            return null;
-
-        return hit.transform.GetComponent<FlowStructureBehavior>();
-    }
-
-    void Update() {
 
     }
 

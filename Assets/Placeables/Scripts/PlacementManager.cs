@@ -10,12 +10,12 @@ public class PlacementManager : SingletonBehavior<PlacementManager> {
     public bool isInPlaceMode { get; private set; }
     private bool isDragging;
     private Drag drag;
-    private PlaceableType selectedBlueprintType;
+    private BuildingType selectedBlueprintType;
     private BlueprintBehavior selectedBlueprint;
 
     private List<BlueprintBehavior> blueprintsPreview = new List<BlueprintBehavior>();
     public Queue<BlueprintBehavior> blueprintsPlaced = new Queue<BlueprintBehavior>();
-    public Queue<PlaceableBehavior> itemsToDestroy = new Queue<PlaceableBehavior>();
+    public Queue<BuildingBehavior> itemsToDestroy = new Queue<BuildingBehavior>();
 
     private new void Awake() {
         base.Awake();
@@ -30,7 +30,7 @@ public class PlacementManager : SingletonBehavior<PlacementManager> {
         MouseInputManager.Instance.OnDragEnd += OnDragEnd;
     }
 
-    public void StartPlaceMode(PlaceableType itemType) {
+    public void StartPlaceMode(BuildingType itemType) {
         this.selectedBlueprintType = itemType;
         ResetSelectedItem();
         isInPlaceMode = true;
@@ -52,7 +52,7 @@ public class PlacementManager : SingletonBehavior<PlacementManager> {
     }
 
     private BlueprintBehavior NewBlueprintOfSelectedType() {
-        PoolBehavior pool = PoolManager.Instance.GetBlueprintPoolByType(selectedBlueprintType);
+        PoolBehavior pool = BuildingPoolManager.Instance.GetBlueprintPool(selectedBlueprintType);
         return pool.GetNext(itemsParent).GetComponent<BlueprintBehavior>();
     }
 
@@ -228,7 +228,7 @@ public class PlacementManager : SingletonBehavior<PlacementManager> {
     }
 
     private void PlaceBlueprint(BlueprintBehavior blueprint) {
-        bool placed = blueprint.TryPlace();
+        bool placed = blueprint.TryPlaceHere();
         blueprint.SetReadyToBuild(placed);
         if (placed) {
             blueprintsPlaced.Enqueue(blueprint);
@@ -257,9 +257,9 @@ public class PlacementManager : SingletonBehavior<PlacementManager> {
         Collider[] hitColliders = Physics.OverlapBox(center, size / 2, Quaternion.identity);
 
         foreach (Collider collider in hitColliders) {
-            PlaceableBehavior placeable = collider.transform.GetComponent<PlaceableBehavior>();
-            if (placeable) {
-                itemsToDestroy.Enqueue(placeable);
+            BuildingBehavior building = collider.transform.GetComponent<BuildingBehavior>();
+            if (building) {
+                itemsToDestroy.Enqueue(building);
             }
         }
     }

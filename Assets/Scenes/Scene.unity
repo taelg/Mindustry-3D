@@ -252,7 +252,7 @@ GameObject:
   - component: {fileID: 82357009}
   - component: {fileID: 82357010}
   m_Layer: 0
-  m_Name: pool
+  m_Name: pool building
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -623,7 +623,7 @@ GameObject:
   - component: {fileID: 530034126}
   - component: {fileID: 530034127}
   m_Layer: 0
-  m_Name: pool (ghost)
+  m_Name: pool blueprint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1611,7 +1611,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 909120516}
-  - component: {fileID: 909120515}
   - component: {fileID: 909120518}
   - component: {fileID: 909120517}
   m_Layer: 0
@@ -1621,18 +1620,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &909120515
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 909120514}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee543792b4032a54f9b6b8783567f697, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &909120516
 Transform:
   m_ObjectHideFlags: 0
@@ -1910,7 +1897,7 @@ GameObject:
   - component: {fileID: 1000106996}
   - component: {fileID: 1000106997}
   m_Layer: 0
-  m_Name: pool
+  m_Name: pool (building)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2155,7 +2142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedBorder: {fileID: 130769769}
-  placeableType: 1
+  buildingType: 1
 --- !u!1 &1060392890
 GameObject:
   m_ObjectHideFlags: 0
@@ -2291,7 +2278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedBorder: {fileID: 1166214272}
-  placeableType: 0
+  buildingType: 0
 --- !u!1 &1064549617
 GameObject:
   m_ObjectHideFlags: 0
@@ -2473,7 +2460,7 @@ GameObject:
   - component: {fileID: 1132141291}
   - component: {fileID: 1132141290}
   m_Layer: 0
-  m_Name: pool (ghost)
+  m_Name: pool (blueprint)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2737,7 +2724,7 @@ GameObject:
   - component: {fileID: 1362201100}
   - component: {fileID: 1362201099}
   m_Layer: 0
-  m_Name: PoolManager
+  m_Name: BuildingPoolManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2756,12 +2743,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolsConfig:
-  - placeableType: 0
-    poolBehavior: {fileID: 1000106997}
-    ghostPoolBehavior: {fileID: 1132141290}
-  - placeableType: 1
-    poolBehavior: {fileID: 82357010}
-    ghostPoolBehavior: {fileID: 530034127}
+  - type: 0
+    buildingPool: {fileID: 1000106997}
+    blueprintPool: {fileID: 1132141290}
+  - type: 1
+    buildingPool: {fileID: 82357010}
+    blueprintPool: {fileID: 530034127}
 --- !u!4 &1362201100
 Transform:
   m_ObjectHideFlags: 0

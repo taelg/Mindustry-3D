@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class SelectMenuBehavior : MonoBehaviour {
 
-    [SerializeField] private PlaceableButtonBehavior[] menuButtons;
+    [SerializeField] private BuildingButtonBehavior[] menuButtons;
 
-    private PlaceableButtonBehavior activeButton = null;
+    private BuildingButtonBehavior activeButton = null;
 
     private void Start() {
         InitializeButtonActions();
@@ -23,14 +23,14 @@ public class SelectMenuBehavior : MonoBehaviour {
     }
 
 
-    private void OnClickSelectPlaceable(PlaceableButtonBehavior button) {
+    private void OnClickSelectBuilding(BuildingButtonBehavior button) {
         UnselectAllButtons();
         UpdateButton(button);
         UpdatePlaceMode();
     }
 
     private void InitializeButtonActions() {
-        menuButtons.ToList().ForEach(button => button.AddEventOnClick(() => OnClickSelectPlaceable(button)));
+        menuButtons.ToList().ForEach(button => button.AddEventOnClick(() => OnClickSelectBuilding(button)));
     }
 
     public void UnselectAllButtons() {
@@ -38,7 +38,7 @@ public class SelectMenuBehavior : MonoBehaviour {
         menuButtons.ToList().ForEach(button => button.Unselect());
     }
 
-    private void UpdateButton(PlaceableButtonBehavior button) {
+    private void UpdateButton(BuildingButtonBehavior button) {
         bool select = activeButton != button;
         button.SetSelect(select);
         activeButton = select ? button : null;
@@ -46,7 +46,7 @@ public class SelectMenuBehavior : MonoBehaviour {
 
     private void UpdatePlaceMode() {
         if (activeButton) {
-            PlacementManager.Instance.StartPlaceMode(activeButton.GetPlaceableType());
+            PlacementManager.Instance.StartPlaceMode(activeButton.GetBuildingType());
         } else {
             PlacementManager.Instance.EndPlaceMode();
         }

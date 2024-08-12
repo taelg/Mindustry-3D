@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 3522464481991729039}
   - component: {fileID: 8297800420301485543}
   m_Layer: 0
-  m_Name: mechanical_drill_ghost
+  m_Name: mechanical_drill_blueprint
   m_TagString: Placeable Ghost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

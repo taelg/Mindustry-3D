@@ -7,7 +7,7 @@ public class MultiTileOreCheckerBehavior : MonoBehaviour {
 
     private OreType oreType = OreType.NONE;
     private int oreTier = 1;
-    private float effectiveTileCount = 0;
+    private int effectiveTileCount = 0;
 
     public void Recalculate() {
         CalculateOreTier();
@@ -37,7 +37,7 @@ public class MultiTileOreCheckerBehavior : MonoBehaviour {
         effectiveTileCount = 0;
         foreach (OreCheckerBehavior checker in oreCheckers) {
             if (checker.IsTouchingOre())
-                effectiveTileCount += 1f;
+                effectiveTileCount += 1;
         }
     }
 
@@ -45,7 +45,7 @@ public class MultiTileOreCheckerBehavior : MonoBehaviour {
         return oreType;
     }
 
-    public float GetEffectiveTileCount() {
+    public int GetEffectiveTileCount() {
         return effectiveTileCount;
     }
 

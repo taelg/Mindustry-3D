@@ -1,7 +1,8 @@
 using System.Linq;
 using UnityEngine;
 
-public class BlueprintBehavior : PlaceableBehavior, IPoolableItem {
+[RequireComponent(typeof(BoxCollider))]
+public class BlueprintBehavior : BuildingBehavior, IPoolableItem {
 
     [SerializeField] private float buildTime;
     [SerializeField] private bool rotable;
@@ -11,11 +12,20 @@ public class BlueprintBehavior : PlaceableBehavior, IPoolableItem {
     private bool readyToBuild = false;
     private float currentBuildingTime = 0;
 
+    public bool TryPlaceHere() {
+        bool isEnoughtSpace = GridSystemManager.Instance.IsGridEmpty(this);
+        if (!isEnoughtSpace)
+            return false;
+
+        GridSystemManager.Instance.TakeSpace(this);
+        return true;
+    }
+
     public void UpdatePreview() {
         UpdateMaterial();
     }
 
-    public override void Reset() {
+    public void Reset() {
         readyToBuild = false;
         currentBuildingTime = 0;
     }
@@ -40,7 +50,7 @@ public class BlueprintBehavior : PlaceableBehavior, IPoolableItem {
                 return true;
             }
         } else {
-            Debug.LogError("You can't call AddProgressToBuild to a GhostPlaceable not yet ready to build.");
+            Debug.LogError("You can't call AddProgressToBuild to a Blueprint not yet ready to build.");
         }
         return false;
     }
@@ -50,13 +60,13 @@ public class BlueprintBehavior : PlaceableBehavior, IPoolableItem {
     }
 
     private void FinishBuild() {
-        PlaceableBehavior placeable = PoolManager.Instance.GetPoolByType(type).GetNext().GetComponent<PlaceableBehavior>();
-        placeable.transform.position = this.transform.position;
-        placeable.transform.forward = this.transform.forward;
-        placeable.transform.SetParent(this.transform.parent);
+        BuildingBehavior building = BuildingPoolManager.Instance.GetBuildingPool(type).GetNext().GetComponent<BuildingBehavior>();
+        building.transform.position = this.transform.position;
+        building.transform.forward = this.transform.forward;
+        building.transform.SetParent(this.transform.parent);
         this.gameObject.SetActive(false);
-        GridSystemManager.Instance.TakeSpace(placeable);
-        placeable.GetComponent<IBuildable>().OnBuild();
+        GridSystemManager.Instance.TakeSpace(building);
+        building.GetComponent<BuildingBehavior>().OnBuild();
     }
 
     private void UpdateMaterial() {
@@ -71,6 +81,10 @@ public class BlueprintBehavior : PlaceableBehavior, IPoolableItem {
             Material[] newMaterialArray = Enumerable.Repeat(material, meshMaterialCount).ToArray();
             mesh.materials = newMaterialArray;
         }
+    }
+
+    public override void OnBuild() {
+        Debug.LogError("Code Should never reach here. After built it's no longer a Blueprint but the actual Building Object.");
     }
 
 }

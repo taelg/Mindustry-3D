@@ -8,10 +8,6 @@ public class GridSystemManager : SingletonBehavior<GridSystemManager> {
         base.Awake();
     }
 
-    public void Place(BlueprintBehavior placeable) {
-        placeable.TryPlace();
-    }
-
     public Tile GetTileOnPos(Vector2Int keyPosition) {
         bool containsKey = occupiedGrid.ContainsKey(keyPosition);
         return containsKey ? occupiedGrid[keyPosition] : null;
@@ -26,9 +22,9 @@ public class GridSystemManager : SingletonBehavior<GridSystemManager> {
         return snappedPosition;
     }
 
-    public bool IsGridEmpty(PlaceableBehavior placeable) {
-        Vector3 position = placeable.transform.position;
-        Vector3 size = placeable.GetSize();
+    public bool IsGridEmpty(BuildingBehavior building) {
+        Vector3 position = building.transform.position;
+        Vector3 size = building.GetSize();
         Vector3 bottomLeft = position - size * 0.5f;
 
         for (int x = Mathf.FloorToInt(bottomLeft.x); x < Mathf.CeilToInt(bottomLeft.x + size.x); x++) {
@@ -44,19 +40,19 @@ public class GridSystemManager : SingletonBehavior<GridSystemManager> {
         return true;
     }
 
-    public void TakeSpace(PlaceableBehavior placeable) {
-        Vector3 size = placeable.GetSize();
-        Vector3 bottomLeft = placeable.transform.position - size * 0.5f;
+    public void TakeSpace(BuildingBehavior building) {
+        Vector3 size = building.GetSize();
+        Vector3 bottomLeft = building.transform.position - size * 0.5f;
         for (int x = Mathf.FloorToInt(bottomLeft.x); x < Mathf.CeilToInt(bottomLeft.x + size.x); x++) {
             for (int z = Mathf.FloorToInt(bottomLeft.z); z < Mathf.CeilToInt(bottomLeft.z + size.z); z++) {
-                AddOrUpdateTileGrid(x, z, placeable);
+                AddOrUpdateTileGrid(x, z, building);
             }
         }
     }
 
-    public void LeaveSpace(PlaceableBehavior placeable) {
-        Vector3 size = placeable.GetSize();
-        Vector3 bottomLeft = placeable.transform.position - size * 0.5f;
+    public void LeaveSpace(BuildingBehavior building) {
+        Vector3 size = building.GetSize();
+        Vector3 bottomLeft = building.transform.position - size * 0.5f;
         for (int x = Mathf.FloorToInt(bottomLeft.x); x < Mathf.CeilToInt(bottomLeft.x + size.x); x++) {
             for (int z = Mathf.FloorToInt(bottomLeft.z); z < Mathf.CeilToInt(bottomLeft.z + size.z); z++) {
                 AddOrUpdateTileGrid(x, z, null);
@@ -64,12 +60,12 @@ public class GridSystemManager : SingletonBehavior<GridSystemManager> {
         }
     }
 
-    private void AddOrUpdateTileGrid(int x, int z, PlaceableBehavior placeable) {
+    private void AddOrUpdateTileGrid(int x, int z, BuildingBehavior building) {
         Vector2Int key = new Vector2Int(x, z);
         if (occupiedGrid.ContainsKey(key)) {
-            occupiedGrid[key].UpdateTile(placeable);
+            occupiedGrid[key].UpdateTile(building);
         } else {
-            occupiedGrid.Add(key, new Tile(placeable));
+            occupiedGrid.Add(key, new Tile(building));
         }
     }
 

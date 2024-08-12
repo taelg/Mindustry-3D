@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlaceableButtonBehavior : MenuButtonBehavior {
+public class BuildingButtonBehavior : MenuButtonBehavior {
 
-    [SerializeField] private PlaceableType placeableType;
+    [SerializeField] private BuildingType buildingType;
 
-    public PlaceableType GetPlaceableType() {
-        return placeableType;
+    public BuildingType GetBuildingType() {
+        return buildingType;
     }
 
 }

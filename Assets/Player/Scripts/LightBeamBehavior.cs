@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Specialized;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
@@ -16,16 +15,16 @@ public class LightBeamBehavior : MonoBehaviour {
         meshFilter = GetComponent<MeshFilter>();
     }
 
-    public void SetLightBeamTarget(BlueprintBehavior ghost) {
+    public void SetLightBeamTarget(BlueprintBehavior blueprint) {
         this.gameObject.SetActive(true);
-        target = ghost;
-        this.boxCollider = ghost.GetComponent<BoxCollider>();
-        StartCoroutine(RemoveTargetAfterBuild(ghost));
+        target = blueprint;
+        this.boxCollider = blueprint.GetComponent<BoxCollider>();
+        StartCoroutine(RemoveTargetAfterBuild(blueprint));
     }
 
-    private IEnumerator RemoveTargetAfterBuild(BlueprintBehavior ghost) {
-        yield return new WaitUntil(() => ghost.IsBuildCompleted());
-        if (target == ghost)
+    private IEnumerator RemoveTargetAfterBuild(BlueprintBehavior blueprint) {
+        yield return new WaitUntil(() => blueprint.IsBuildCompleted());
+        if (target == blueprint)
             target = null;
     }
 

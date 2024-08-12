@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class MechanicalDrillBehavior : FlowStructureBehavior, IBuildable {
+public class MechanicalDrill : FlowBuildingBehavior, IPoolableItem {
 
 
     [Header("Configurable")]
@@ -26,23 +26,29 @@ public class MechanicalDrillBehavior : FlowStructureBehavior, IBuildable {
     private float currentSpeed = 0;
 
 
-    public void OnBuild() {
-        //TODO: Fix model. The model show some imperfection on rotate.
+    public void Reset() {
+        StopAllCoroutines();
         this.transform.forward = Vector3.forward;
+    }
+
+    public override void OnBuild() {
+        oreChecker.Recalculate();
+        StartDrill();
     }
 
     private void Update() {
         SpinDrill();
-        RestartDrill();
     }
 
     private void StartDrill() {
+        if (oreChecker.GetEffectiveTileCount() == 0)
+            return;
+
         acceleration = drillSpeed / (secondsToMaxSpeed / 0.02f);
         starting = true;
         StopAllCoroutines();
         StartCoroutine(SpeedUpDrill());
         StartCoroutine(Production());
-
     }
 
     private void StopDrill() {
@@ -53,13 +59,6 @@ public class MechanicalDrillBehavior : FlowStructureBehavior, IBuildable {
 
     private void SpinDrill() {
         drill.Rotate(0f, -currentSpeed, 0f, Space.Self);
-    }
-
-    private void RestartDrill() {
-        if (!producing && !IsFull() && !starting) {
-            oreChecker.Recalculate();
-            StartDrill();
-        }
     }
 
     private IEnumerator SpeedUpDrill() {
@@ -74,7 +73,7 @@ public class MechanicalDrillBehavior : FlowStructureBehavior, IBuildable {
 
     private IEnumerator SpeedDownDrill() {
         while (currentSpeed > 0) {
-            currentSpeed -= (acceleration / 1000);
+            currentSpeed -= acceleration / 1000;
             yield return new WaitForSeconds(0.02f);
         }
         currentSpeed = 0;
@@ -102,6 +101,5 @@ public class MechanicalDrillBehavior : FlowStructureBehavior, IBuildable {
     private bool IsAtMaxSpeed() {
         return currentSpeed >= drillSpeed;
     }
-
 
 }

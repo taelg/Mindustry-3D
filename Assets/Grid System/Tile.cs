@@ -1,26 +1,26 @@
 public class Tile {
-    public PlaceableBehavior placeable = null;
+    public BuildingBehavior building = null;
 
     public OreType ore = OreType.NONE;
 
-    public Tile(PlaceableBehavior placeable) {
-        SetTile(placeable);
+    public Tile(BuildingBehavior building) {
+        SetTile(building);
     }
 
-    public void UpdateTile(PlaceableBehavior placeable) {
-        SetTile(placeable);
+    public void UpdateTile(BuildingBehavior building) {
+        SetTile(building);
     }
 
-    private void SetTile(PlaceableBehavior placeable) {
-        this.placeable = placeable;
+    private void SetTile(BuildingBehavior building) {
+        this.building = building;
     }
 
     public bool IsEmpty() {
-        return placeable == null;
+        return building == null;
     }
 
-    public void RemovePlaceable() {
-        placeable = null;
+    public void RemoveBuilding() {
+        building = null;
     }
 
 }

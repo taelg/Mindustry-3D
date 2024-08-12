@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 5759452723140417741}
   - component: {fileID: 5199007697092087706}
   m_Layer: 0
-  m_Name: convoyer_ghost
+  m_Name: convoyer_blueprint
   m_TagString: Placeable Ghost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
