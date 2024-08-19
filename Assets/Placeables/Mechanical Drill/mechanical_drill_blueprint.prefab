@@ -95,8 +95,8 @@ GameObject:
   m_Component:
   - component: {fileID: 934448511209709444}
   - component: {fileID: 5067795003557632011}
-  - component: {fileID: 3522464481991729039}
   - component: {fileID: 8297800420301485543}
+  - component: {fileID: 5810641610674826387}
   m_Layer: 0
   m_Name: mechanical_drill_blueprint
   m_TagString: Placeable Ghost
@@ -142,26 +142,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 0.5, z: 2}
   m_Center: {x: 0, y: 0.25, z: 0}
---- !u!114 &3522464481991729039
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2498490901268224240}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ca1b5f843e244045a31319444f1333b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0
-  boxCollider: {fileID: 5067795003557632011}
-  buildTime: 0.15
-  materialBlue: {fileID: 2100000, guid: fe0fc3e6302b45a47bae6dbcb29bf6ce, type: 2}
-  materialRed: {fileID: 2100000, guid: 5b70e7a863c829446a6854595793c515, type: 2}
-  meshRenderers:
-  - {fileID: 775516686051329105}
-  - {fileID: 1810089652524776721}
 --- !u!54 &8297800420301485543
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -189,6 +169,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5810641610674826387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2498490901268224240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04c744fc8a2f4d74da2b12f62061deb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  boxCollider: {fileID: 0}
+  buildTime: 0
+  rotable: 0
+  materialBlue: {fileID: 2100000, guid: fe0fc3e6302b45a47bae6dbcb29bf6ce, type: 2}
+  materialRed: {fileID: 2100000, guid: 5b70e7a863c829446a6854595793c515, type: 2}
+  meshRenderers:
+  - {fileID: 775516686051329105}
+  - {fileID: 1810089652524776721}
 --- !u!1 &4171093487030774173
 GameObject:
   m_ObjectHideFlags: 0

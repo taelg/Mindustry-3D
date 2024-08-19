@@ -1,26 +1,22 @@
 public class Tile {
     public BuildingBehavior building = null;
 
-    public OreType ore = OreType.NONE;
+    public OreType oreType = OreType.NONE;
 
-    public Tile(BuildingBehavior building) {
-        SetTile(building);
-    }
+    public Tile() { }
 
-    public void UpdateTile(BuildingBehavior building) {
-        SetTile(building);
-    }
-
-    private void SetTile(BuildingBehavior building) {
+    public Tile SetBuilding(BuildingBehavior building) {
         this.building = building;
+        return this;
+    }
+
+    public Tile SetOreType(OreType oreType) {
+        this.oreType = oreType;
+        return this;
     }
 
     public bool IsEmpty() {
         return building == null;
-    }
-
-    public void RemoveBuilding() {
-        building = null;
     }
 
 }

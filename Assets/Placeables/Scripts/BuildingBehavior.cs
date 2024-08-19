@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -18,6 +19,10 @@ public abstract class BuildingBehavior : MonoBehaviour {
 
     public BuildingType GetBuildingType() {
         return type;
+    }
+
+    protected List<Tile> GetOwnTiles() {
+        return GridSystemManager.Instance.GetOwnTiles(this);
     }
 
 }

@@ -6,22 +6,24 @@ public class BlueprintBehavior : BuildingBehavior, IPoolableItem {
 
     [SerializeField] private float buildTime;
     [SerializeField] private bool rotable;
-    [SerializeField] private Material materialBlue;
-    [SerializeField] private Material materialRed;
+    [SerializeField] protected Material materialBlue;
+    [SerializeField] protected Material materialRed;
     [SerializeField] private MeshRenderer[] meshRenderers;
+    protected bool canPlaceHere = false;
     private bool readyToBuild = false;
     private float currentBuildingTime = 0;
 
     public bool TryPlaceHere() {
-        bool isEnoughtSpace = GridSystemManager.Instance.IsGridEmpty(this);
-        if (!isEnoughtSpace)
+        if (!canPlaceHere)
             return false;
 
         GridSystemManager.Instance.TakeSpace(this);
         return true;
     }
 
-    public void UpdatePreview() {
+    public virtual void UpdatePreview() {
+        bool isEnoughtSpace = GridSystemManager.Instance.IsGridEmpty(this);
+        canPlaceHere = isEnoughtSpace;
         UpdateMaterial();
     }
 
@@ -69,13 +71,12 @@ public class BlueprintBehavior : BuildingBehavior, IPoolableItem {
         building.GetComponent<BuildingBehavior>().OnBuild();
     }
 
-    private void UpdateMaterial() {
-        bool isEnoughtSpace = GridSystemManager.Instance.IsGridEmpty(this);
-        Material material = isEnoughtSpace ? materialBlue : materialRed;
+    protected void UpdateMaterial() {
+        Material material = canPlaceHere ? materialBlue : materialRed;
         SetAllMaterialsTo(material);
     }
 
-    private void SetAllMaterialsTo(Material material) {
+    protected void SetAllMaterialsTo(Material material) {
         foreach (MeshRenderer mesh in meshRenderers) {
             int meshMaterialCount = mesh.materials.Length;
             Material[] newMaterialArray = Enumerable.Repeat(material, meshMaterialCount).ToArray();

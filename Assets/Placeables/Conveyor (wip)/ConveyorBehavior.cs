@@ -13,10 +13,10 @@ public class Conveyor : FlowBuildingBehavior, IPoolableItem {
     public Vector3 outputDir;
 
     public void Reset() {
-        outputDir = this.transform.forward;
     }
 
     public override void OnBuild() {
+        outputDir = this.transform.forward;
         SetSingleOutputDir(outputDir);
         UpdateConveyorInputs();
     }

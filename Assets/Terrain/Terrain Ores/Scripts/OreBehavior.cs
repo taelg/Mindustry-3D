@@ -6,6 +6,17 @@ public class OreBehavior : MonoBehaviour {
     [SerializeField] private OreType oreType = OreType.NONE;
     [SerializeField] private int oreTier = 1;
 
+    [Header("Internal")]
+    [SerializeField] private BoxCollider boxCollider;
+
+    private void Start() {
+        TakePlaceOnTiles();
+    }
+
+    private void TakePlaceOnTiles() {
+        GridSystemManager.Instance.TakeSpace(this);
+    }
+
     private void OnTriggerEnter(Collider other) {
         TriggerOnTouchOreCheckers(other);
     }
@@ -18,6 +29,10 @@ public class OreBehavior : MonoBehaviour {
 
     public OreType GetOreType() {
         return oreType;
+    }
+
+    public BoxCollider GetBoxCollider() {
+        return boxCollider;
     }
 
 

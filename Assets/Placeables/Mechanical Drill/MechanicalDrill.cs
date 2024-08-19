@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MechanicalDrill : FlowBuildingBehavior, IPoolableItem {
@@ -15,25 +16,46 @@ public class MechanicalDrill : FlowBuildingBehavior, IPoolableItem {
 
     [Space]
     [Header("Internal")]
-    [SerializeField] private MultiTileOreCheckerBehavior oreChecker;
     [SerializeField] private Transform drill;
 
-    private float acceleration;
-    private bool starting = false;
-    private bool producing = false;
-    private float oreCount;
-
+    private float currentAcceleration = 0;
     private float currentSpeed = 0;
+    private float currentOreCount = 0;
+    private OreType foundOreType = OreType.NONE;
+    private int foundOreTier = 1;
+    private int effectiveOreTileCount = 0;
 
 
     public void Reset() {
-        StopAllCoroutines();
+        Debug.Log("Reset");
         this.transform.forward = Vector3.forward;
+        foundOreType = OreType.NONE;
+        currentSpeed = 0;
     }
 
     public override void OnBuild() {
-        oreChecker.Recalculate();
+        Debug.Log("On Build");
+        CalculateOreInformation();
+        Debug.Log("foundOreType.........: " + foundOreType);
+        Debug.Log("effectiveOreTileCount: " + effectiveOreTileCount);
         StartDrill();
+    }
+    private void CalculateOreInformation() { //TODO: this method is reapeted on MechanicalDrillBlueprint
+        List<Tile> ownTiles = GetOwnTiles();
+        effectiveOreTileCount = 0;
+
+        foreach (Tile tile in ownTiles) {
+            OreType foundOreType = tile.oreType;
+            if (foundOreType == OreType.NONE)
+                continue;
+
+            bool noOreFoundYet = this.foundOreType == OreType.NONE;
+            if (noOreFoundYet) {
+                this.foundOreType = foundOreType;
+                this.foundOreTier = 1; //TODO: Implement Ore Tiers.
+            }
+            effectiveOreTileCount++;
+        }
     }
 
     private void Update() {
@@ -41,11 +63,12 @@ public class MechanicalDrill : FlowBuildingBehavior, IPoolableItem {
     }
 
     private void StartDrill() {
-        if (oreChecker.GetEffectiveTileCount() == 0)
+        Debug.Log("foundOreType: " + foundOreType);
+        if (foundOreType == OreType.NONE)
             return;
 
-        acceleration = drillSpeed / (secondsToMaxSpeed / 0.02f);
-        starting = true;
+        Debug.Log("effectiveness: " + effectiveOreTileCount);
+        currentAcceleration = drillSpeed / (secondsToMaxSpeed / 0.02f);
         StopAllCoroutines();
         StartCoroutine(SpeedUpDrill());
         StartCoroutine(Production());
@@ -63,17 +86,15 @@ public class MechanicalDrill : FlowBuildingBehavior, IPoolableItem {
 
     private IEnumerator SpeedUpDrill() {
         while (currentSpeed < drillSpeed) {
-            currentSpeed += (acceleration / 1000);
+            currentSpeed += (currentAcceleration / 1000);
             yield return new WaitForSeconds(0.02f);
         }
         currentSpeed = drillSpeed;
-        starting = false;
-        producing = true;
     }
 
     private IEnumerator SpeedDownDrill() {
         while (currentSpeed > 0) {
-            currentSpeed -= acceleration / 1000;
+            currentSpeed -= currentAcceleration / 1000;
             yield return new WaitForSeconds(0.02f);
         }
         currentSpeed = 0;
@@ -81,21 +102,19 @@ public class MechanicalDrill : FlowBuildingBehavior, IPoolableItem {
 
     private IEnumerator Production() {
         yield return new WaitUntil(() => IsAtMaxSpeed());
-        oreChecker.Recalculate();
-        bool drillTierIsEnough = oreChecker.GetOreTier() <= tier;
+        bool drillTierIsEnough = foundOreTier <= tier;
 
         while (!IsFull() && drillTierIsEnough) {
-            float timeToDrillOne = drillTime / oreChecker.GetEffectiveTileCount();
+            float timeToDrillOne = drillTime / effectiveOreTileCount;
             yield return new WaitForSeconds(timeToDrillOne);
-            oreCount++;
+            currentOreCount++;
         }
 
-        producing = false;
         StopDrill();
     }
 
     private bool IsFull() {
-        return oreCount >= maxOreCapacity;
+        return currentOreCount >= maxOreCapacity;
     }
 
     private bool IsAtMaxSpeed() {
