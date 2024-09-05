@@ -25,7 +25,7 @@ public class SelectMenuBehavior : MonoBehaviour {
 
     private void OnClickSelectBuilding(BuildingButtonBehavior button) {
         UnselectAllButtons();
-        UpdateButton(button);
+        UpdateActiveButton(button);
         UpdatePlaceMode();
     }
 
@@ -34,14 +34,13 @@ public class SelectMenuBehavior : MonoBehaviour {
     }
 
     public void UnselectAllButtons() {
-        activeButton = null;
         menuButtons.ToList().ForEach(button => button.Unselect());
     }
 
-    private void UpdateButton(BuildingButtonBehavior button) {
-        bool select = activeButton != button;
-        button.SetSelect(select);
-        activeButton = select ? button : null;
+    private void UpdateActiveButton(BuildingButtonBehavior button) {
+        bool isSelecting = activeButton != button;
+        button.SetSelect(isSelecting);
+        activeButton = isSelecting ? button : null;
     }
 
     private void UpdatePlaceMode() {
