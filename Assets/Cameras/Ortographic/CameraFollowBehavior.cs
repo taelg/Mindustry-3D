@@ -21,7 +21,10 @@ public class CameraFollowBehavior : MonoBehaviour {
     }
 
     private void UpdateTargetPosition() {
-        targetPosition = player.transform.position;
+        float targetX = player.transform.position.x;
+        float selfY = this.transform.position.y;
+        float targetZ = player.transform.position.z;
+        targetPosition = new Vector3(targetX, selfY, targetZ);
     }
 
     private void UpdateCurrentSpeed() {
