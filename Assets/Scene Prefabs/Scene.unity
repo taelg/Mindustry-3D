@@ -149,6 +149,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Playtest Stage
       objectReference: {fileID: 0}
+    - target: {fileID: 886628238367867276, guid: 0f5d079e8b8e1de44af04bb06bfe1055, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8535535
+      objectReference: {fileID: 0}
+    - target: {fileID: 886628238367867276, guid: 0f5d079e8b8e1de44af04bb06bfe1055, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.35355338
+      objectReference: {fileID: 0}
+    - target: {fileID: 886628238367867276, guid: 0f5d079e8b8e1de44af04bb06bfe1055, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.35355338
+      objectReference: {fileID: 0}
+    - target: {fileID: 886628238367867276, guid: 0f5d079e8b8e1de44af04bb06bfe1055, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.1464466
+      objectReference: {fileID: 0}
+    - target: {fileID: 886628238367867276, guid: 0f5d079e8b8e1de44af04bb06bfe1055, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 45
+      objectReference: {fileID: 0}
     - target: {fileID: 3307602514555288208, guid: 0f5d079e8b8e1de44af04bb06bfe1055, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -339,9 +359,57 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4337733429778797334, guid: 0721eb6dd189324428cb108faff509eb, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4337733429778797334, guid: 0721eb6dd189324428cb108faff509eb, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4337733429778797334, guid: 0721eb6dd189324428cb108faff509eb, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4337733429778797334, guid: 0721eb6dd189324428cb108faff509eb, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4337733429778797334, guid: 0721eb6dd189324428cb108faff509eb, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4337733429778797334, guid: 0721eb6dd189324428cb108faff509eb, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5944440178593404494, guid: 0721eb6dd189324428cb108faff509eb, type: 3}
       propertyPath: m_Name
       value: UI (Canvas)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7809653642368810511, guid: 0721eb6dd189324428cb108faff509eb, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7809653642368810511, guid: 0721eb6dd189324428cb108faff509eb, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7809653642368810511, guid: 0721eb6dd189324428cb108faff509eb, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7809653642368810511, guid: 0721eb6dd189324428cb108faff509eb, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7809653642368810511, guid: 0721eb6dd189324428cb108faff509eb, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7809653642368810511, guid: 0721eb6dd189324428cb108faff509eb, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
