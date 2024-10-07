@@ -261,6 +261,22 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8932110647966328428, guid: 0f5d079e8b8e1de44af04bb06bfe1055, type: 3}
+      propertyPath: m_DrawHalo
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8932110647966328428, guid: 0f5d079e8b8e1de44af04bb06bfe1055, type: 3}
+      propertyPath: m_Lightmapping
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8932110647966328428, guid: 0f5d079e8b8e1de44af04bb06bfe1055, type: 3}
+      propertyPath: m_Shadows.m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8932110647966328428, guid: 0f5d079e8b8e1de44af04bb06bfe1055, type: 3}
+      propertyPath: m_Shadows.m_NormalBias
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
